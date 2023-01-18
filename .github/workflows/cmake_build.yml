@@ -88,7 +88,7 @@ jobs:
             -DIMPROC_WITH_BOOST=${{ matrix.config.boost }} \
             -DIMPROC_WITH_COVERAGE=${{ matrix.config.coverage }} \
             -DIMPROC_WITH_TESTS=ON \
-            -DIMPROC_OPENCV_DIR="/usr"
+            -DIMPROC_OPENCV_DIR="/usr" \
             -G "Unix Makefiles"
       
       - name: Build
