@@ -51,7 +51,7 @@ jobs:
           gcc-11   --version
           clang-14 --version
           lcov     --version
-          pkg-config --libs opencv
+          ls /usr/lib
 
           cd ..
           git clone --recurse-submodules -b ${{ steps.branch-name.outputs.current_branch }} https://github.com/pirlruc/infrastructure.git
