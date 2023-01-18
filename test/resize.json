@@ -1,0 +1,12 @@
+{
+    "resize":
+    {
+        "to_image_size": (optional)
+        {
+            "width": 10,
+            "height": 15
+        },
+        "scale": [2.0,2.2], (optional)
+        "interpolation": "linear"
+    }
+}

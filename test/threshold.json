@@ -1,0 +1,11 @@
+{
+    "threshold":
+    {
+        "type": "binary",
+        "parameters":
+        {
+            "thresh_value": 200, (other besides otsu and triangle)
+            "max_value": 255 (binary)
+        }
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "inputs": ["image","from_color_space"],
+    "outputs": "image",
+    "from_color_space": ["rgb","gray"],
+    "to_color_space": "bgr"
+}

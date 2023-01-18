@@ -1,0 +1,16 @@
+{
+    "morphological_operation":
+    {
+        "type": "close",
+        "kernel":
+        {
+            "shape": "rectangle",
+            "size":
+            {
+                "width": 10,
+                "height": 15
+            }
+        },
+        "number_iterations": 1
+    }
+}

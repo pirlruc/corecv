@@ -1,0 +1,7 @@
+**/.vscode
+**/build
+**/external
+**/*_config.hpp
+**/*_compilation_variables.hpp
+**/install
+**/*.profraw

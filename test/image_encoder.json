@@ -1,0 +1,10 @@
+{
+    "image_encoder":
+    {
+        "to_image_format": "png",
+        "parameters":
+        {
+            (...)
+        }
+    }
+}
