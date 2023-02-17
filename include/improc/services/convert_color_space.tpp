@@ -10,12 +10,12 @@ improc::ConvertColorSpace<KeyType,ContextType>& improc::ConvertColorSpace<KeyTyp
     SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
                       , spdlog::level::trace
                       , "Loading configuration for color space conversion service..." );
+    static const std::string kToColorSpaceKey   = "to_color_space";
     this->improc::BaseService<KeyType,ContextType>::Load(service_json);
 
     for (Json::Value::const_iterator service_json_iter = service_json.begin(); service_json_iter != service_json.end(); ++service_json_iter)
     {
         const std::string kFromColorSpaceKey = "from_color_space";
-        const std::string kToColorSpaceKey   = "to_color_space";
 
         SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
                           , spdlog::level::info
@@ -42,10 +42,9 @@ improc::ConvertColorSpace<KeyType,ContextType>& improc::ConvertColorSpace<KeyTyp
 
     if (this->to_color_space_.empty() == true)
     {
-        SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
-                          , spdlog::level::err
-                          , "ERROR_01: To color space field missing." );
-        throw improc::file_processing_error();
+        std::string error_message = fmt::format("Key {} is missing from color space json",kToColorSpaceKey);
+        IMPROC_CORECV_LOGGER_ERROR("ERROR_01: " + error_message);
+        throw improc::json_error(std::move(error_message));
     }
     return (*this);
 }

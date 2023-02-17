@@ -9,7 +9,7 @@ TEST(ConvertColorSpace,TestLoadWithoutToColorSpace) {
     Json::Value json_content = json_file.Read();
 
     improc::StringKeyHeterogeneousConvertColorSpace convert {};
-    EXPECT_THROW(convert.Load(json_content),improc::file_processing_error);
+    EXPECT_THROW(convert.Load(json_content),improc::json_error);
 }
 
 TEST(ConvertColorSpace,TestLoadWithFromColorSpaceArray) {
@@ -54,7 +54,7 @@ TEST(ConvertColorSpace,TestWithoutFromColorSpaceInContext) {
     improc::StringKeyHeterogeneousContext cntxt {};
     cntxt.Add("image",image_data);
 
-    EXPECT_THROW(convert.Run(cntxt),improc::not_found_key);
+    EXPECT_THROW(convert.Run(cntxt),improc::key_error);
 }
 
 TEST(ConvertColorSpace,TestWithFromColorSpaceSingleConversion) {
