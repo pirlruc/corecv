@@ -30,7 +30,7 @@ TEST(ConvertColorSpace,TestWithoutFromColorSpace) {
     convert.Load(json_content);
 
     cv::Mat             image_data       = cv::Mat::ones(10,5,CV_8UC3);
-    improc::ColorSpace  from_color_space = improc::ColorSpace::kRGB;
+    improc::ColorSpace  from_color_space {improc::ColorSpace::kRGB};
     improc::StringKeyHeterogeneousContext cntxt {};
     cntxt.Add("image",image_data);
     cntxt.Add("from_color_space",from_color_space);

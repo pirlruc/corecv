@@ -27,14 +27,14 @@ namespace improc
 
         public:
             ImageFormat();                              
-            ImageFormat(const std::string& image_format_str);
+            explicit ImageFormat(const std::string& image_format_str);
 
             /**
              * @brief Construct a new improc::ImageFormat object
              * 
              * @param image_format_value - image format value
              */
-            constexpr                   ImageFormat(Value image_format_value): value_(std::move(image_format_value)) {}
+            constexpr explicit          ImageFormat(Value image_format_value): value_(std::move(image_format_value)) {}
 
             /**
              * @brief Obtain image format value

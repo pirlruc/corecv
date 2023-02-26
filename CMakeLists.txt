@@ -80,21 +80,23 @@ set(
 
   ${PROJECT_SOURCE_DIR}/include/improc/corecv/logger_improc.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/color_space.hpp
-  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/threshold_type.hpp
-  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/kernel_shape.hpp
-  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/interpolation_type.hpp
-  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/morphological_oper.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/image_format.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/interpolation_type.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/kernel_shape.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/morphological_oper.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/rotation_type.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/threshold_type.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/services/convert_color_space.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/services/resize_image.hpp
   
   ${PROJECT_SOURCE_DIR}/src/color_space.cpp
-  ${PROJECT_SOURCE_DIR}/src/threshold_type.cpp
-  ${PROJECT_SOURCE_DIR}/src/kernel_shape.cpp
-  ${PROJECT_SOURCE_DIR}/src/interpolation_type.cpp
-  ${PROJECT_SOURCE_DIR}/src/morphological_oper.cpp
   ${PROJECT_SOURCE_DIR}/src/image_format.cpp
   ${PROJECT_SOURCE_DIR}/src/image.cpp
+  ${PROJECT_SOURCE_DIR}/src/interpolation_type.cpp
+  ${PROJECT_SOURCE_DIR}/src/kernel_shape.cpp
+  ${PROJECT_SOURCE_DIR}/src/morphological_oper.cpp
+  ${PROJECT_SOURCE_DIR}/src/rotation_type.cpp
+  ${PROJECT_SOURCE_DIR}/src/threshold_type.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${IMPROC_CORECV_LIB_FILES})

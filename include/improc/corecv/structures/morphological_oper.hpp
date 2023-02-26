@@ -28,14 +28,14 @@ namespace improc
 
         public:
             MorphologicalOper();                              
-            MorphologicalOper(const std::string& morphological_oper_str);
+            explicit MorphologicalOper(const std::string& morphological_oper_str);
 
             /**
              * @brief Construct a new improc::MorphologicalOper object
              * 
              * @param morphological_oper_value - morphological operation value
              */
-            constexpr                   MorphologicalOper(Value morphological_oper_value): value_(std::move(morphological_oper_value)) {}
+            constexpr explicit          MorphologicalOper(Value morphological_oper_value): value_(std::move(morphological_oper_value)) {}
 
             /**
              * @brief Obtain morphological operation value

@@ -22,7 +22,7 @@ improc::ConvertColorSpace<KeyType,ContextType>& improc::ConvertColorSpace<KeyTyp
                           , "Analyzing field {} for color space service...",service_json_iter.name() );
         if (service_json_iter.name() == kFromColorSpaceKey)
         {
-            this->from_color_space_ = service_json_iter->asString();
+            this->from_color_space_ = improc::ColorSpace(service_json_iter->asString());
         }
         else if (service_json_iter.name() == kToColorSpaceKey)
         {
@@ -30,12 +30,12 @@ improc::ConvertColorSpace<KeyType,ContextType>& improc::ConvertColorSpace<KeyTyp
             {
                 for (Json::Value::const_iterator array_iter = service_json_iter->begin(); array_iter != service_json_iter->end(); ++array_iter)
                 {
-                    this->to_color_space_.push_back(array_iter->asString());
+                    this->to_color_space_.push_back(improc::ColorSpace(array_iter->asString()));
                 }
             }
             else
             {
-                this->to_color_space_.push_back(service_json_iter->asString());
+                this->to_color_space_.push_back(improc::ColorSpace(service_json_iter->asString()));
             }
         }
     }
