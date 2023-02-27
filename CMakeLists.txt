@@ -79,6 +79,7 @@ set(
   IMPROC_CORECV_LIB_FILES
 
   ${PROJECT_SOURCE_DIR}/include/improc/corecv/logger_improc.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/corecv/parsers/json_parser.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/color_space.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/image_format.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/interpolation_type.hpp

@@ -77,6 +77,7 @@ namespace improc
             /**
              * @brief Obtain OpenCV color conversion code from source to target color space.
              * 
+             * @tparam ColorSpaceType - color space data type: improc::ColorSpace or improc::ColorSpace::Value
              * @param to_color_space - target color space
              */
             template<typename ColorSpaceType = improc::ColorSpace::Value>

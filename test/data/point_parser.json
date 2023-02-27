@@ -1,0 +1,18 @@
+{
+    "point-int":
+    {
+        "x": 6, "y": 10
+    },
+    "point-double":
+    {
+        "x": 6.3, "y": 10.6
+    },
+    "point-no-x":
+    {
+        "y": 5
+    },
+    "point-no-y":
+    {
+        "x": 5
+    }
+}
