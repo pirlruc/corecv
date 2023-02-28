@@ -13,25 +13,18 @@ TEST(MorphologicalOper,TestConstructorFromValue) {
 }
 
 TEST(MorphologicalOper,TestConstructorFromLowerString) {
-    improc::MorphologicalOper morph_oper_dilate{"dilate"};
-    improc::MorphologicalOper morph_oper_erode {"erode"};
-    improc::MorphologicalOper morph_oper_open  {"open"};
-    improc::MorphologicalOper morph_oper_close {"close"};
-    EXPECT_EQ(morph_oper_dilate,improc::MorphologicalOper::Value::kDilate);
-    EXPECT_EQ(morph_oper_erode ,improc::MorphologicalOper::Value::kErode);
-    EXPECT_EQ(morph_oper_open  ,improc::MorphologicalOper::Value::kOpen);
-    EXPECT_EQ(morph_oper_close ,improc::MorphologicalOper::Value::kClose);
+    EXPECT_EQ(improc::MorphologicalOper("dilate"),improc::MorphologicalOper::Value::kDilate);
+    EXPECT_EQ(improc::MorphologicalOper("erode") ,improc::MorphologicalOper::Value::kErode);
+    EXPECT_EQ(improc::MorphologicalOper("open")  ,improc::MorphologicalOper::Value::kOpen);
+    EXPECT_EQ(improc::MorphologicalOper("close") ,improc::MorphologicalOper::Value::kClose);
 }
 
 TEST(MorphologicalOper,TestConstructorFromUpperString) {
-    improc::MorphologicalOper morph_oper_dilate{"DILATE"};
-    improc::MorphologicalOper morph_oper_erode {"ERODE"};
-    improc::MorphologicalOper morph_oper_open  {"OPEN"};
-    improc::MorphologicalOper morph_oper_close {"CLOSE"};
-    EXPECT_EQ(morph_oper_dilate,improc::MorphologicalOper::Value::kDilate);
-    EXPECT_EQ(morph_oper_erode ,improc::MorphologicalOper::Value::kErode);
-    EXPECT_EQ(morph_oper_open  ,improc::MorphologicalOper::Value::kOpen);
-    EXPECT_EQ(morph_oper_close ,improc::MorphologicalOper::Value::kClose);
+    EXPECT_EQ(improc::MorphologicalOper("DILATE"),improc::MorphologicalOper::Value::kDilate);
+    EXPECT_EQ(improc::MorphologicalOper("ERODE") ,improc::MorphologicalOper::Value::kErode);
+    EXPECT_EQ(improc::MorphologicalOper("OPEN")  ,improc::MorphologicalOper::Value::kOpen);
+    EXPECT_EQ(improc::MorphologicalOper("CLOSE") ,improc::MorphologicalOper::Value::kClose);
+}
 }
 
 TEST(MorphologicalOper,TestInvalidMorphOperConstructor) {

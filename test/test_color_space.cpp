@@ -13,29 +13,19 @@ TEST(ColorSpace,TestConstructorFromValue) {
 }
 
 TEST(ColorSpace,TestConstructorFromLowerString) {
-    improc::ColorSpace color_space_bgr {"bgr"};
-    improc::ColorSpace color_space_rgb {"rgb"};
-    improc::ColorSpace color_space_bgra{"bgra"};
-    improc::ColorSpace color_space_rgba{"rgba"};
-    improc::ColorSpace color_space_gray{"gray"};
-    EXPECT_EQ(color_space_bgr ,improc::ColorSpace::Value::kBGR );
-    EXPECT_EQ(color_space_rgb ,improc::ColorSpace::Value::kRGB );
-    EXPECT_EQ(color_space_bgra,improc::ColorSpace::Value::kBGRA);
-    EXPECT_EQ(color_space_rgba,improc::ColorSpace::Value::kRGBA);
-    EXPECT_EQ(color_space_gray,improc::ColorSpace::Value::kGray);
+    EXPECT_EQ(improc::ColorSpace("bgr") ,improc::ColorSpace::Value::kBGR );
+    EXPECT_EQ(improc::ColorSpace("rgb") ,improc::ColorSpace::Value::kRGB );
+    EXPECT_EQ(improc::ColorSpace("bgra"),improc::ColorSpace::Value::kBGRA);
+    EXPECT_EQ(improc::ColorSpace("rgba"),improc::ColorSpace::Value::kRGBA);
+    EXPECT_EQ(improc::ColorSpace("gray"),improc::ColorSpace::Value::kGray);
 }
 
 TEST(ColorSpace,TestConstructorFromUpperString) {
-    improc::ColorSpace color_space_bgr {"BGR"};
-    improc::ColorSpace color_space_rgb {"RGB"};
-    improc::ColorSpace color_space_bgra{"BGRA"};
-    improc::ColorSpace color_space_rgba{"RGBA"};
-    improc::ColorSpace color_space_gray{"GRAY"};
-    EXPECT_EQ(color_space_bgr ,improc::ColorSpace::Value::kBGR );
-    EXPECT_EQ(color_space_rgb ,improc::ColorSpace::Value::kRGB );
-    EXPECT_EQ(color_space_bgra,improc::ColorSpace::Value::kBGRA);
-    EXPECT_EQ(color_space_rgba,improc::ColorSpace::Value::kRGBA);
-    EXPECT_EQ(color_space_gray,improc::ColorSpace::Value::kGray);
+    EXPECT_EQ(improc::ColorSpace("BGR") ,improc::ColorSpace::Value::kBGR );
+    EXPECT_EQ(improc::ColorSpace("RGB") ,improc::ColorSpace::Value::kRGB );
+    EXPECT_EQ(improc::ColorSpace("BGRA"),improc::ColorSpace::Value::kBGRA);
+    EXPECT_EQ(improc::ColorSpace("RGBA"),improc::ColorSpace::Value::kRGBA);
+    EXPECT_EQ(improc::ColorSpace("GRAY"),improc::ColorSpace::Value::kGray);
 }
 
 TEST(ColorSpace,TestInvalidStringConstructor) {

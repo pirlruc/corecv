@@ -13,25 +13,17 @@ TEST(RotationType,TestConstructorFromValue) {
 }
 
 TEST(RotationType,TestConstructorFromLowerString) {
-    improc::RotationType rotation_0deg   {"0-deg"};
-    improc::RotationType rotation_90deg  {"90-deg"};
-    improc::RotationType rotation_180deg {"180-deg"};
-    improc::RotationType rotation_270deg {"270-deg"};
-    EXPECT_EQ(rotation_0deg  ,improc::RotationType::Value::k0Deg);
-    EXPECT_EQ(rotation_90deg ,improc::RotationType::Value::k90Deg);
-    EXPECT_EQ(rotation_180deg,improc::RotationType::Value::k180Deg);
-    EXPECT_EQ(rotation_270deg,improc::RotationType::Value::k270Deg);
+    EXPECT_EQ(improc::RotationType("0-deg")  ,improc::RotationType::Value::k0Deg);
+    EXPECT_EQ(improc::RotationType("90-deg") ,improc::RotationType::Value::k90Deg);
+    EXPECT_EQ(improc::RotationType("180-deg"),improc::RotationType::Value::k180Deg);
+    EXPECT_EQ(improc::RotationType("270-deg"),improc::RotationType::Value::k270Deg);
 }
 
 TEST(RotationType,TestConstructorFromUpperString) {
-    improc::RotationType rotation_0deg   {"0-DEG"};
-    improc::RotationType rotation_90deg  {"90-DEG"};
-    improc::RotationType rotation_180deg {"180-DEG"};
-    improc::RotationType rotation_270deg {"270-DEG"};
-    EXPECT_EQ(rotation_0deg  ,improc::RotationType::Value::k0Deg);
-    EXPECT_EQ(rotation_90deg ,improc::RotationType::Value::k90Deg);
-    EXPECT_EQ(rotation_180deg,improc::RotationType::Value::k180Deg);
-    EXPECT_EQ(rotation_270deg,improc::RotationType::Value::k270Deg);
+    EXPECT_EQ(improc::RotationType("0-DEG")  ,improc::RotationType::Value::k0Deg);
+    EXPECT_EQ(improc::RotationType("90-DEG") ,improc::RotationType::Value::k90Deg);
+    EXPECT_EQ(improc::RotationType("180-DEG"),improc::RotationType::Value::k180Deg);
+    EXPECT_EQ(improc::RotationType("270-DEG"),improc::RotationType::Value::k270Deg);
 }
 
 TEST(RotationType,TestInvalidRotationConstructor) {
