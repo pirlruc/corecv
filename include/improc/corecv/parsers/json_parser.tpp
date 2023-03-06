@@ -4,10 +4,7 @@
  * @tparam DataType - data type for point parsing utility
  */
 template <typename DataType>
-improc::Point<DataType>::Point(): x(0),y(0) 
-{
-    static_assert(std::is_same_v<DataType,int> || std::is_same_v<DataType,double>, "Point parsing not defined for data type");
-};
+improc::Point<DataType>::Point(): x(0),y(0) {};
 
 /**
  * @brief Construct a new improc::Point object
@@ -43,10 +40,7 @@ improc::Point<DataType>::Point(const Json::Value& json_point): improc::Point<Dat
  * @tparam DataType - data type for size parsing utility
  */
 template <typename DataType>
-improc::Size<DataType>::Size(): width(0),height(0) 
-{
-    static_assert(std::is_same_v<DataType,int> || std::is_same_v<DataType,double>, "Size parsing not defined for data type");
-};
+improc::Size<DataType>::Size(): width(0),height(0) {};
 
 /**
  * @brief Construct a new improc::Size object

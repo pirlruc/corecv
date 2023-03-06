@@ -18,6 +18,8 @@ namespace improc
     template<typename DataType>
     struct Point final
     {
+        static_assert(std::is_same_v<DataType,int> || std::is_same_v<DataType,double>, "Point parsing not defined for data type");
+
         DataType x;
         DataType y;
 
@@ -33,6 +35,8 @@ namespace improc
     template<typename DataType>
     struct Size final
     {
+        static_assert(std::is_same_v<DataType,int> || std::is_same_v<DataType,double>, "Size parsing not defined for data type");
+
         DataType width;
         DataType height;
 

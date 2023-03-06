@@ -25,7 +25,6 @@ TEST(MorphologicalOper,TestConstructorFromUpperString) {
     EXPECT_EQ(improc::MorphologicalOper("OPEN")  ,improc::MorphologicalOper::Value::kOpen);
     EXPECT_EQ(improc::MorphologicalOper("CLOSE") ,improc::MorphologicalOper::Value::kClose);
 }
-}
 
 TEST(MorphologicalOper,TestInvalidMorphOperConstructor) {
     EXPECT_THROW(improc::MorphologicalOper morph_oper {"invalid"},std::out_of_range);
