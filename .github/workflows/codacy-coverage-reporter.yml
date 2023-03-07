@@ -52,14 +52,11 @@ jobs:
           gcc-11   --version
           clang-14 --version
           lcov     --version
-        #  ls /usr/lib32
           ls /usr/lib64
 
           cd ..
           git clone --recurse-submodules -b developer https://github.com/pirlruc/infrastructure.git
           git clone --recurse-submodules -b developer https://github.com/pirlruc/services.git
-        # git clone --recurse-submodules -b ${{ steps.branch-name.outputs.current_branch }} https://github.com/pirlruc/infrastructure.git
-        # git clone --recurse-submodules -b ${{ steps.branch-name.outputs.current_branch }} https://github.com/pirlruc/services.git
 
       - name: Configure
         shell: bash
