@@ -54,10 +54,11 @@ jobs:
           gcc-11   --version
           clang-14 --version
           lcov     --version
-          ls /usr/lib/x86_64-linux-gnu
+          ls /usr/share
 
           cd ..
           git clone --recurse-submodules -b developer https://github.com/pirlruc/infrastructure.git
+          ls /usr/local/share
           git clone --recurse-submodules -b developer https://github.com/pirlruc/services.git
 
       - name: Configure
@@ -74,7 +75,7 @@ jobs:
             -DIMPROC_WITH_BOOST=${{ matrix.config.boost }} \
             -DIMPROC_WITH_COVERAGE=${{ matrix.config.coverage }} \
             -DIMPROC_WITH_TESTS=ON \
-            -DIMPROC_OPENCV_DIR="/usr/lib" \
+            -DIMPROC_OPENCV_DIR="/usr/lib/x86_64-linux-gnu" \
             -G "Unix Makefiles"
 
       - name: Build
