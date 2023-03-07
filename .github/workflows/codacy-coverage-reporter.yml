@@ -52,7 +52,7 @@ jobs:
           gcc-11   --version
           clang-14 --version
           lcov     --version
-          ls /usr/lib64
+          ls /usr/lib32
 
           cd ..
           git clone --recurse-submodules -b developer https://github.com/pirlruc/infrastructure.git
@@ -72,7 +72,7 @@ jobs:
             -DIMPROC_WITH_BOOST=${{ matrix.config.boost }} \
             -DIMPROC_WITH_COVERAGE=${{ matrix.config.coverage }} \
             -DIMPROC_WITH_TESTS=ON \
-            -DIMPROC_OPENCV_DIR="/usr/lib64" \
+            -DIMPROC_OPENCV_DIR="/usr/lib32" \
             -G "Unix Makefiles"
 
       - name: Build
