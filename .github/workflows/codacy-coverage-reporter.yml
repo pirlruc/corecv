@@ -46,6 +46,7 @@ jobs:
           sudo apt-get install gcc-11 g++-11
           sudo apt-get install clang-14
           sudo apt-get install lcov
+          sudo apt-get install libopencv-dev
           sudo apt-get install libopencv-imgcodecs-dev
           sudo apt-get install libopencv-imgproc-dev
           sudo apt-get install libopencv-core-dev
@@ -60,6 +61,7 @@ jobs:
           git clone --recurse-submodules -b developer https://github.com/pirlruc/infrastructure.git
           ls /usr/local/share
           git clone --recurse-submodules -b developer https://github.com/pirlruc/services.git
+          ls /usr/lib/x86_64-linux-gnu
 
       - name: Configure
         shell: bash
@@ -75,7 +77,7 @@ jobs:
             -DIMPROC_WITH_BOOST=${{ matrix.config.boost }} \
             -DIMPROC_WITH_COVERAGE=${{ matrix.config.coverage }} \
             -DIMPROC_WITH_TESTS=ON \
-            -DIMPROC_OPENCV_DIR="/usr/lib/x86_64-linux-gnu" \
+            -DIMPROC_OPENCV_DIR="/usr/local/share" \
             -G "Unix Makefiles"
 
       - name: Build
