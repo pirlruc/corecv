@@ -13,7 +13,7 @@ namespace improc
     /**
      * @brief Color space methods and utilities
      */
-    class ColorSpace final
+    class IMPROC_API ColorSpace final
     {
         public:
             enum Value : IMPROC_ENUM_KEY_TYPE
@@ -30,14 +30,14 @@ namespace improc
 
         public:
             ColorSpace();                              
-            ColorSpace(const std::string& color_space_str);
+            explicit ColorSpace(const std::string& color_space_str);
 
             /**
-             * @brief Construct a new improc::ThresholdType object
+             * @brief Construct a new improc::ColorSpace object
              * 
              * @param color_space_value - color space value
              */
-            constexpr                   ColorSpace(Value color_space_value): value_(std::move(color_space_value)) {}
+            constexpr explicit          ColorSpace(Value color_space_value): value_(std::move(color_space_value)) {}
 
             /**
              * @brief Obtain color space value
@@ -77,14 +77,30 @@ namespace improc
             /**
              * @brief Obtain OpenCV color conversion code from source to target color space.
              * 
+             * @tparam ColorSpaceType - color space data type: improc::ColorSpace or improc::ColorSpace::Value
              * @param to_color_space - target color space
              */
-            constexpr cv::ColorConversionCodes GetColorConversionCode(const ColorSpace& to_color_space) const
+            template<typename ColorSpaceType = improc::ColorSpace::Value>
+            constexpr cv::ColorConversionCodes GetColorConversionCode(const ColorSpaceType& to_color_space) const
             {
+                improc::ColorSpace::Value to_color_space_value {};
+                if constexpr (std::is_same_v<ColorSpaceType,improc::ColorSpace::Value>)
+                {
+                    to_color_space_value = std::move(to_color_space);
+                }
+                else if constexpr (std::is_same_v<ColorSpaceType,improc::ColorSpace>)
+                {
+                    to_color_space_value = std::move(to_color_space).operator improc::ColorSpace::Value();
+                }
+                else
+                {
+                    static_assert(improc::dependent_false_v<ColorSpaceType>,"GetColorConversionCode not defined for color space type");
+                }
+
                 switch (this->value_)
                 {
                     case ColorSpace::Value::kBGR : 
-                        switch (std::move(to_color_space))
+                        switch (std::move(to_color_space_value))
                         {
                             case ColorSpace::Value::kBGR : throw improc::not_supported_color_conversion();  break;
                             case ColorSpace::Value::kRGB : return cv::COLOR_BGR2RGB;                        break;
@@ -95,7 +111,7 @@ namespace improc
                         break;
 
                     case ColorSpace::Value::kRGB :
-                        switch (std::move(to_color_space))
+                        switch (std::move(to_color_space_value))
                         {
                             case ColorSpace::Value::kBGR : return cv::COLOR_RGB2BGR;                        break;
                             case ColorSpace::Value::kRGB : throw improc::not_supported_color_conversion();  break;
@@ -106,7 +122,7 @@ namespace improc
                         break;
 
                     case ColorSpace::Value::kBGRA:
-                        switch (std::move(to_color_space))
+                        switch (std::move(to_color_space_value))
                         {
                             case ColorSpace::Value::kBGR : return cv::COLOR_BGRA2BGR;                       break;
                             case ColorSpace::Value::kRGB : return cv::COLOR_BGRA2RGB;                       break;
@@ -117,7 +133,7 @@ namespace improc
                         break;
 
                     case ColorSpace::Value::kRGBA:
-                        switch (std::move(to_color_space))
+                        switch (std::move(to_color_space_value))
                         {
                             case ColorSpace::Value::kBGR : return cv::COLOR_RGBA2BGR;                       break;
                             case ColorSpace::Value::kRGB : return cv::COLOR_RGBA2RGB;                       break;
@@ -128,7 +144,7 @@ namespace improc
                         break;
 
                     case ColorSpace::Value::kGray:
-                        switch (std::move(to_color_space))
+                        switch (std::move(to_color_space_value))
                         {
                             case ColorSpace::Value::kBGR : return cv::COLOR_GRAY2BGR;                       break;
                             case ColorSpace::Value::kRGB : return cv::COLOR_GRAY2RGB;                       break;

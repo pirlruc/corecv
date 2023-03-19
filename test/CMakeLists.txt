@@ -40,7 +40,8 @@ if(IMPROC_WITH_COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 
     COMMAND ${LLVM_PROFDATA} merge --sparse ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/default.profraw 
                                    -o ${CMAKE_BINARY_DIR}/${PROJECT_NAME}_coverage.profdata
-    COMMAND ${LLVM_COV} export --format=lcov --instr-profile ${CMAKE_BINARY_DIR}/${PROJECT_NAME}_coverage.profdata 
+    COMMAND ${LLVM_COV} export  --ignore-filename-regex="external/*" 
+                                --format=lcov --instr-profile ${CMAKE_BINARY_DIR}/${PROJECT_NAME}_coverage.profdata 
                                                              ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}_testd 
                                                            > ${CMAKE_BINARY_DIR}/${PROJECT_NAME}_coverage.lcov
     COMMAND ${GENHTML} --demangle-cpp -o ${PROJECT_NAME}_coverage ${CMAKE_BINARY_DIR}/${PROJECT_NAME}_coverage.lcov
@@ -71,10 +72,12 @@ add_executable(
   ${PROJECT_NAME}_test
     
   ${PROJECT_SOURCE_DIR}/test/test_logger_improc.cpp
+  ${PROJECT_SOURCE_DIR}/test/test_json_parser.cpp
   ${PROJECT_SOURCE_DIR}/test/test_color_space.cpp
   ${PROJECT_SOURCE_DIR}/test/test_threshold_type.cpp
   ${PROJECT_SOURCE_DIR}/test/test_kernel_shape.cpp
   ${PROJECT_SOURCE_DIR}/test/test_interpolation_type.cpp
+  ${PROJECT_SOURCE_DIR}/test/test_rotation_type.cpp
   ${PROJECT_SOURCE_DIR}/test/test_morphological_oper.cpp
   ${PROJECT_SOURCE_DIR}/test/test_image_format.cpp
   ${PROJECT_SOURCE_DIR}/test/test_image.cpp

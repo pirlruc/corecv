@@ -12,7 +12,7 @@ namespace improc
     /**
      * @brief Threshold type methods and utilities
      */
-    class ThresholdType final
+    class IMPROC_API ThresholdType final
     {
         public:
             enum Value : IMPROC_ENUM_KEY_TYPE
@@ -26,14 +26,14 @@ namespace improc
 
         public:
             ThresholdType();                              
-            ThresholdType(const std::string& threshold_type_str);
+            explicit ThresholdType(const std::string& threshold_type_str);
 
             /**
              * @brief Construct a new improc::ThresholdType object
              * 
              * @param threshold_type_value - threshold type value
              */
-            constexpr                       ThresholdType(Value threshold_type_value): value_(std::move(threshold_type_value)) {}
+            constexpr explicit              ThresholdType(Value threshold_type_value): value_(std::move(threshold_type_value)) {}
 
             /**
              * @brief Obtain threshold type value
