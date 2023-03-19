@@ -4,23 +4,17 @@ improc::Image::Image() : data_(cv::Mat()) {}
 
 improc::Image::Image(const cv::Mat& image_data) : Image()
 {
-    SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
-                      , spdlog::level::trace
-                      , "Creating image object..." );    
+    IMPROC_CORECV_LOGGER_TRACE("Creating image object...");    
     this->set_data(image_data);
 }
 
 void improc::Image::set_data(const cv::Mat& image_data)
 {
-    SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
-                      , spdlog::level::trace
-                      , "Setting image data..." );
+    IMPROC_CORECV_LOGGER_TRACE("Setting image data...");
     if (image_data.depth() != CV_8U) 
     {
-        SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
-                          , spdlog::level::err
-                          , "ERROR_01: Not supported data type for image. Expected {} received {}."
-                          , CV_8U, image_data.depth() );
+        IMPROC_CORECV_LOGGER_ERROR  ( "ERROR_01: Not supported data type for image. Expected {} received {}."
+                                    , CV_8U, image_data.depth() );
         throw improc::not_supported_data_type();
     }
     this->data_ = image_data;
@@ -28,17 +22,13 @@ void improc::Image::set_data(const cv::Mat& image_data)
 
 cv::Mat improc::Image::get_data() const
 {
-    SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
-                      , spdlog::level::trace
-                      , "Obtaining image data..." );    
+    IMPROC_CORECV_LOGGER_TRACE("Obtaining image data...");    
     return this->data_;
 }
 
 improc::Image improc::Image::Clone() const
 {
-    SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
-                      , spdlog::level::trace
-                      , "Cloning image object..." );    
+    IMPROC_CORECV_LOGGER_TRACE("Cloning image object...");    
     return improc::Image(this->get_data().clone());
 }
 
@@ -82,16 +72,12 @@ improc::ColorSpaceImage::ColorSpaceImage() : improc::Image()
 
 improc::ColorSpace improc::ColorSpaceImage::get_color_space() const
 {
-    SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
-                      , spdlog::level::trace
-                      , "Obtaining color space..." );    
+    IMPROC_CORECV_LOGGER_TRACE("Obtaining color space...");    
     return this->color_space_;
 }
 
 improc::ColorSpaceImage improc::ColorSpaceImage::Clone() const
 {
-    SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
-                      , spdlog::level::trace
-                      , "Cloning color space image object..." );    
+    IMPROC_CORECV_LOGGER_TRACE("Cloning color space image object...");    
     return improc::ColorSpaceImage(this->Image::Clone().get_data(),this->color_space_);
 }

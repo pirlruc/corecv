@@ -19,7 +19,7 @@ namespace improc {
 
         public:
             Image();
-            Image(const cv::Mat& image_data);
+            explicit Image(const cv::Mat& image_data);
 
             void                        set_data(const cv::Mat& image_data);
             cv::Mat                     get_data()  const;
