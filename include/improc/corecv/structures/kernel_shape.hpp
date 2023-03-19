@@ -12,7 +12,7 @@ namespace improc
     /**
      * @brief Kernel shape methods and utilities
      */
-    class KernelShape final
+    class IMPROC_API KernelShape final
     {
         public:
             enum Value : IMPROC_ENUM_KEY_TYPE

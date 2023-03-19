@@ -12,7 +12,7 @@ namespace improc
     /**
      * @brief Threshold type methods and utilities
      */
-    class ThresholdType final
+    class IMPROC_API ThresholdType final
     {
         public:
             enum Value : IMPROC_ENUM_KEY_TYPE

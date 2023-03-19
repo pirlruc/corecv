@@ -12,7 +12,7 @@ namespace improc
     /**
      * @brief Image format methods and utilities
      */
-    class ImageFormat final
+    class IMPROC_API ImageFormat final
     {
         public:
             enum Value : IMPROC_ENUM_KEY_TYPE

@@ -13,7 +13,7 @@ namespace improc
     /**
      * @brief Color space methods and utilities
      */
-    class ColorSpace final
+    class IMPROC_API ColorSpace final
     {
         public:
             enum Value : IMPROC_ENUM_KEY_TYPE

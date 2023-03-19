@@ -12,7 +12,7 @@
 namespace improc {
     // TODO: Review implementation and add tests
     // TODO: Make compatible with cv::UMat and cv::MatExpr
-    class Image
+    class IMPROC_API Image
     {
         protected:
             cv::Mat                     data_;
@@ -32,7 +32,7 @@ namespace improc {
 
 
     // TODO: Review implementation and add tests
-    class ColorSpaceImage : public Image
+    class IMPROC_API ColorSpaceImage : public Image
     {
         private:
             ColorSpace                  color_space_;

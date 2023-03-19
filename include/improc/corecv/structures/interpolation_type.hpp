@@ -12,7 +12,7 @@ namespace improc
     /**
      * @brief Interpolation type methods and utilities
      */
-    class InterpolationType final
+    class IMPROC_API InterpolationType final
     {
         public:
             enum Value : IMPROC_ENUM_KEY_TYPE

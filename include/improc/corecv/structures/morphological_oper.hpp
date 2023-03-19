@@ -12,7 +12,7 @@ namespace improc
     /**
      * @brief Morphological operation methods and utilities
      */
-    class MorphologicalOper final
+    class IMPROC_API MorphologicalOper final
     {
         public:
             enum Value : IMPROC_ENUM_KEY_TYPE
