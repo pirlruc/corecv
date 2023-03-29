@@ -12,7 +12,7 @@ namespace improc
     /**
      * @brief Kernel shape methods and utilities
      */
-    class KernelShape final
+    class IMPROC_API KernelShape final
     {
         public:
             enum Value : IMPROC_ENUM_KEY_TYPE
@@ -26,14 +26,14 @@ namespace improc
 
         public:
             KernelShape();                              
-            KernelShape(const std::string& kernel_shape_str);
+            explicit KernelShape(const std::string& kernel_shape_str);
 
             /**
              * @brief Construct a new improc::KernelShape object
              * 
              * @param kernel_shape_value - kernel shape value
              */
-            constexpr                   KernelShape(Value kernel_shape_value): value_(std::move(kernel_shape_value)) {}
+            constexpr explicit          KernelShape(Value kernel_shape_value): value_(std::move(kernel_shape_value)) {}
 
             /**
              * @brief Obtain kernel shape value

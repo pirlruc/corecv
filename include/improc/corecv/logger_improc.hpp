@@ -14,7 +14,7 @@ namespace improc
     {
         friend std::shared_ptr<ImageProcLogger> LoggerSingleton::get(const std::string& logger_name);
         private:
-            ImageProcLogger(std::shared_ptr<spdlog::logger>&& logger) : LoggerSingleton(std::move(logger)) {}
+            explicit ImageProcLogger(std::shared_ptr<spdlog::logger>&& logger) : LoggerSingleton(std::move(logger)) {}
 
         public:
             ImageProcLogger(ImageProcLogger&  that)       = delete;

@@ -8,6 +8,10 @@ if(NOT DEFINED IMPROC_SUPERPROJECT_VERSION)
   set(IMPROC_SUPERPROJECT_VERSION 1.0.0)
 endif()
 
+if(NOT DEFINED IMPROC_CORECV_WITH_TESTS)
+  set(IMPROC_CORECV_WITH_TESTS OFF)
+endif()
+
 project(
   improc_corecv
   VERSION     ${IMPROC_SUPERPROJECT_VERSION}
@@ -27,8 +31,8 @@ if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
   option(IMPROC_WITH_COVERAGE  	     "Building library with code coverage"  OFF)
   option(BUILD_SHARED_LIBS           "Building shared libraries"            ON)
 
-  add_subdirectory(${PROJECT_SOURCE_DIR}/../infrastructure ${CMAKE_BINARY_DIR}/infrastructure)
-  add_subdirectory(${PROJECT_SOURCE_DIR}/../services       ${CMAKE_BINARY_DIR}/services)
+  add_subdirectory(${PROJECT_SOURCE_DIR}/modules/infrastructure ${CMAKE_BINARY_DIR}/infrastructure)
+  add_subdirectory(${PROJECT_SOURCE_DIR}/modules/services       ${CMAKE_BINARY_DIR}/services)
 endif()
 
 # Add external dependencies
@@ -43,8 +47,9 @@ if(NOT DEFINED IMPROC_OPENCV_DIR)
   set(BUILD_opencv_apps     OFF)
   set(BUILD_PERF_TESTS      OFF)
   set(BUILD_TESTS           OFF)
+  set(WITH_V4L              OFF)
+  set(WITH_WEBP             OFF)
   set(WITH_TBB              ON )
-  set(WITH_V4L              ON )
   set(WITH_OPENGL           ON )
   FetchContent_MakeAvailable(opencv)
   list(APPEND IMPROC_OPENCV_LIBS opencv_core)
@@ -79,22 +84,25 @@ set(
   IMPROC_CORECV_LIB_FILES
 
   ${PROJECT_SOURCE_DIR}/include/improc/corecv/logger_improc.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/corecv/parsers/json_parser.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/color_space.hpp
-  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/threshold_type.hpp
-  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/kernel_shape.hpp
-  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/interpolation_type.hpp
-  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/morphological_oper.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/image_format.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/interpolation_type.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/kernel_shape.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/morphological_oper.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/rotation_type.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/threshold_type.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/services/convert_color_space.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/services/resize_image.hpp
   
   ${PROJECT_SOURCE_DIR}/src/color_space.cpp
-  ${PROJECT_SOURCE_DIR}/src/threshold_type.cpp
-  ${PROJECT_SOURCE_DIR}/src/kernel_shape.cpp
-  ${PROJECT_SOURCE_DIR}/src/interpolation_type.cpp
-  ${PROJECT_SOURCE_DIR}/src/morphological_oper.cpp
   ${PROJECT_SOURCE_DIR}/src/image_format.cpp
   ${PROJECT_SOURCE_DIR}/src/image.cpp
+  ${PROJECT_SOURCE_DIR}/src/interpolation_type.cpp
+  ${PROJECT_SOURCE_DIR}/src/kernel_shape.cpp
+  ${PROJECT_SOURCE_DIR}/src/morphological_oper.cpp
+  ${PROJECT_SOURCE_DIR}/src/rotation_type.cpp
+  ${PROJECT_SOURCE_DIR}/src/threshold_type.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${IMPROC_CORECV_LIB_FILES})
@@ -121,7 +129,7 @@ target_link_libraries       (${PROJECT_NAME}  INTERFACE  improc::services)
 target_link_libraries       (${PROJECT_NAME}  INTERFACE  ${IMPROC_OPENCV_LIBS})
 
 # Tests configuration
-if(IMPROC_WITH_TESTS)
+if(IMPROC_WITH_TESTS OR IMPROC_CORECV_WITH_TESTS)
   add_subdirectory(${PROJECT_SOURCE_DIR}/test     ${CMAKE_BINARY_DIR}/improc_corecv_test)
 endif()
 
