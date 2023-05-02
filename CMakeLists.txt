@@ -60,6 +60,7 @@ if(NOT DEFINED IMPROC_OPENCV_DIR)
   list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/modules/core/include)
   list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/modules/imgproc/include)
   list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/modules/imgcodecs/include) # for drawer support
+  set(IMPROC_OPENCV_INSTALL_LIBS ${IMPROC_OPENCV_LIBS})  
 else()
   set(OpenCV_DIR ${IMPROC_OPENCV_DIR})
   find_package(OpenCV REQUIRED)
@@ -134,7 +135,7 @@ if(IMPROC_WITH_TESTS OR IMPROC_CORECV_WITH_TESTS)
 endif()
 
 # Install configuration
-set(${PROJECT_NAME}_libs ${PROJECT_NAME} improc_services ${IMPROC_OPENCV_LIBS})
+set(${PROJECT_NAME}_libs ${PROJECT_NAME} improc_services ${IMPROC_OPENCV_INSTALL_LIBS})
 install(
   TARGETS     ${${PROJECT_NAME}_libs}
   DESTINATION lib
