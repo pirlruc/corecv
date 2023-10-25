@@ -41,7 +41,7 @@ if(NOT DEFINED IMPROC_OPENCV_DIR)
   FetchContent_Declare(
     opencv
     GIT_REPOSITORY  https://github.com/opencv/opencv
-    GIT_TAG         4.7.0
+    GIT_TAG         4.8.1
     SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/opencv
   )
   set(BUILD_opencv_apps     OFF)
@@ -67,15 +67,6 @@ else()
   set(IMPROC_OPENCV_LIBS          ${OpenCV_LIBS})
   set(IMPROC_OPENCV_INCLUDE_DIRS  ${OpenCV_INCLUDE_DIRS})
 endif()
-
-# # DLIB
-# FetchContent_Declare(
-#   dlib
-#   GIT_REPOSITORY  https://github.com/davisking/dlib
-#   GIT_TAG         v19.22
-#   SOURCE_DIR      ${CMAKE_CURRENT_BINARY_DIR}/../external/dlib
-# )
-# FetchContent_MakeAvailable(dlib)
 
 message(STATUS "Build ${PROJECT_NAME} Version: ${PROJECT_VERSION}")
 message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
