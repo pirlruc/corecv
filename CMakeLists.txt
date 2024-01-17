@@ -12,6 +12,10 @@ if(NOT DEFINED IMPROC_CORECV_WITH_TESTS)
   set(IMPROC_CORECV_WITH_TESTS OFF)
 endif()
 
+if(IMPROC_WITH_TESTS OR IMPROC_CORECV_WITH_TESTS)
+  list(APPEND VCPKG_MANIFEST_FEATURES "tests")
+endif()
+
 project(
   improc_corecv
   VERSION     ${IMPROC_SUPERPROJECT_VERSION}
@@ -36,39 +40,44 @@ if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
 endif()
 
 # Add external dependencies
-if(NOT DEFINED IMPROC_OPENCV_DIR)
-  # OPENCV
-  FetchContent_Declare(
-    opencv
-    GIT_REPOSITORY  https://github.com/opencv/opencv
-    GIT_TAG         4.8.1
-    SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/opencv
-  )
-  set(BUILD_opencv_apps     OFF)
-  set(BUILD_PERF_TESTS      OFF)
-  set(BUILD_TESTS           OFF)
-  set(WITH_V4L              OFF)
-  set(WITH_WEBP             OFF)
-  set(WITH_TBB              ON )
-  set(WITH_OPENGL           ON )
-  FetchContent_MakeAvailable(opencv)
-  list(APPEND IMPROC_OPENCV_LIBS opencv_core)
-  list(APPEND IMPROC_OPENCV_LIBS opencv_imgproc)
-  list(APPEND IMPROC_OPENCV_LIBS opencv_imgcodecs)                                                        # for drawer support
-  list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${CMAKE_BINARY_DIR})
-  list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/include)
-  list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/modules/core/include)
-  list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/modules/imgproc/include)
-  list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/modules/imgcodecs/include) # for drawer support
-  set(IMPROC_OPENCV_INSTALL_LIBS ${IMPROC_OPENCV_LIBS})  
+if(DEFINED CMAKE_TOOLCHAIN_FILE)
+  find_package(OpenCV CONFIG REQUIRED)
 else()
-  set(OpenCV_DIR ${IMPROC_OPENCV_DIR})
-  find_package(OpenCV REQUIRED)
-  set(IMPROC_OPENCV_LIBS          ${OpenCV_LIBS})
-  set(IMPROC_OPENCV_INCLUDE_DIRS  ${OpenCV_INCLUDE_DIRS})
+  if(NOT DEFINED IMPROC_OPENCV_DIR)
+    # OPENCV
+    FetchContent_Declare(
+      opencv
+      GIT_REPOSITORY  https://github.com/opencv/opencv
+      GIT_TAG         4.9.0
+      SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/opencv
+    )
+    set(BUILD_opencv_apps     OFF)
+    set(BUILD_PERF_TESTS      OFF)
+    set(BUILD_TESTS           OFF)
+    set(WITH_V4L              OFF)
+    set(WITH_WEBP             OFF)
+    set(WITH_TBB              ON )
+    set(WITH_OPENGL           ON )
+    FetchContent_MakeAvailable(opencv)
+    list(APPEND IMPROC_OPENCV_LIBS opencv_core)
+    list(APPEND IMPROC_OPENCV_LIBS opencv_imgproc)
+    list(APPEND IMPROC_OPENCV_LIBS opencv_imgcodecs)                                                        # for drawer support
+    list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${CMAKE_BINARY_DIR})
+    list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/include)
+    list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/modules/core/include)
+    list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/modules/imgproc/include)
+    list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/modules/imgcodecs/include) # for drawer support
+    set(IMPROC_OPENCV_INSTALL_LIBS ${IMPROC_OPENCV_LIBS})  
+  else()
+    set(OpenCV_DIR ${IMPROC_OPENCV_DIR})
+    find_package(OpenCV REQUIRED)
+    set(IMPROC_OPENCV_LIBS          ${OpenCV_LIBS})
+    set(IMPROC_OPENCV_INCLUDE_DIRS  ${OpenCV_INCLUDE_DIRS})
+  endif()
 endif()
 
 message(STATUS "Build ${PROJECT_NAME} Version: ${PROJECT_VERSION}")
+message(STATUS "CMake Toolchain File: ${CMAKE_TOOLCHAIN_FILE}")
 message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "Install Dir: ${CMAKE_INSTALL_PREFIX}")
 
@@ -125,12 +134,63 @@ if(IMPROC_WITH_TESTS OR IMPROC_CORECV_WITH_TESTS)
   add_subdirectory(${PROJECT_SOURCE_DIR}/test     ${CMAKE_BINARY_DIR}/improc_corecv_test)
 endif()
 
-# Install configuration
-set(${PROJECT_NAME}_libs ${PROJECT_NAME} improc_services ${IMPROC_OPENCV_INSTALL_LIBS})
-install(
-  TARGETS     ${${PROJECT_NAME}_libs}
-  DESTINATION lib
-  EXPORT      ${PROJECT_NAME}_target 
-)
-install(FILES     ${PROJECT_SOURCE_DIR}/external/opencv/LICENSE DESTINATION share/licenses/improc/opencv)
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/improc          DESTINATION include)
+# # Install configuration
+# if (NOT DEFINED CMAKE_INSTALL_LIBDIR)
+#   set(CMAKE_INSTALL_LIBDIR "lib")
+# endif()
+# if (NOT DEFINED CMAKE_INSTALL_BINDIR)
+#   set(CMAKE_INSTALL_BINDIR "bin")
+# endif()
+# if (NOT DEFINED CMAKE_INSTALL_INCLUDEDIR)
+#   set(CMAKE_INSTALL_INCLUDEDIR "include")
+# endif()
+
+# # Include files
+# install(
+#   TARGETS     ${PROJECT_NAME}
+#   EXPORT      ${PROJECT_NAME}_targets
+#   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+#   INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+# )
+# install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/improc                  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+# install(FILES     ${PROJECT_SOURCE_DIR}/LICENSE                         DESTINATION share/licenses/improc/corecv)
+# if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+#   install(FILES     ${PROJECT_SOURCE_DIR}/external/opencv/LICENSE       DESTINATION share/licenses/improc/opencv)
+# endif()
+
+# # pkg-config files
+# if(IS_ABSOLUTE ${CMAKE_INSTALL_INCLUDEDIR})
+#   set(PKG_CONFIG_INCLUDEDIR ${CMAKE_INSTALL_INCLUDEDIR})
+# else()
+#   set(PKG_CONFIG_INCLUDEDIR "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
+# endif()
+# if(IS_ABSOLUTE ${CMAKE_INSTALL_LIBDIR})
+#   set(PKG_CONFIG_LIBDIR ${CMAKE_INSTALL_LIBDIR})
+# else()
+#   set(PKG_CONFIG_LIBDIR "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
+# endif()
+# configure_file(
+#   ${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}.pc.in
+#   ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc 
+#   @ONLY )
+# install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+
+# # CMake config files
+# set(CONFIG_TARGETS_FILE "${PROJECT_NAME}ConfigTargets.cmake")
+# set(EXPORT_DESTINATION_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
+# install(EXPORT ${PROJECT_NAME}_targets FILE ${CONFIG_TARGETS_FILE} DESTINATION ${EXPORT_DESTINATION_DIR})
+
+# include(CMakePackageConfigHelpers)
+# configure_package_config_file(
+#   ${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}_config.cmake.in
+#   ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake 
+#   INSTALL_DESTINATION ${EXPORT_DESTINATION_DIR} )
+# write_basic_package_version_file(
+#   ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+#   VERSION ${IMPROC_SUPERPROJECT_VERSION}
+#   COMPATIBILITY SameMajorVersion)
+# install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake 
+#               ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+#         DESTINATION ${EXPORT_DESTINATION_DIR})

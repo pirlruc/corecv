@@ -1,15 +1,32 @@
 {
-  "name": "corecv-vcpkg-dependencies",
-  "version": "1.0",
+  "name": "improc-corecv",
+  "version": "1.0.0",
+  "port-version": 0,
   "dependencies": [
     {
-      "name": "opencv",
-      "version>=": "4.8.0"
+      "name": "spdlog",
+      "version>=": "1.12.0"
     },
     {
-      "name": "gtest",
-      "version>=": "1.14.0"
-    }
+      "name": "jsoncpp",
+      "version>=": "1.9.5"
+    },
+    {
+      "name": "opencv",
+      "version>=": "4.8.0",
+      "features": ["ipp","tbb","openmp","opengl","jpeg","png","tiff"]
+    }    
   ],
-  "builtin-baseline": "b669595870177598587d3ff67e675f4f9213fe82"
+  "features": {
+    "tests": {
+      "description": "Support test library",
+      "dependencies": [
+        {
+          "name": "gtest",
+          "version>=": "1.14.0"
+        }
+      ]
+    }
+  },
+  "builtin-baseline": "a42af01b72c28a8e1d7b48107b33e4f286a55ef6"
 }
