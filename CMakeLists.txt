@@ -42,38 +42,33 @@ endif()
 # Add external dependencies
 if(DEFINED CMAKE_TOOLCHAIN_FILE)
   find_package(OpenCV CONFIG REQUIRED)
+  set(IMPROC_OPENCV_LIBS          ${OpenCV_LIBS})
+  set(IMPROC_OPENCV_INCLUDE_DIRS  ${OpenCV_INCLUDE_DIRS})
 else()
-  if(NOT DEFINED IMPROC_OPENCV_DIR)
-    # OPENCV
-    FetchContent_Declare(
-      opencv
-      GIT_REPOSITORY  https://github.com/opencv/opencv
-      GIT_TAG         4.9.0
-      SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/opencv
-    )
-    set(BUILD_opencv_apps     OFF)
-    set(BUILD_PERF_TESTS      OFF)
-    set(BUILD_TESTS           OFF)
-    set(WITH_V4L              OFF)
-    set(WITH_WEBP             OFF)
-    set(WITH_TBB              ON )
-    set(WITH_OPENGL           ON )
-    FetchContent_MakeAvailable(opencv)
-    list(APPEND IMPROC_OPENCV_LIBS opencv_core)
-    list(APPEND IMPROC_OPENCV_LIBS opencv_imgproc)
-    list(APPEND IMPROC_OPENCV_LIBS opencv_imgcodecs)                                                        # for drawer support
-    list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${CMAKE_BINARY_DIR})
-    list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/include)
-    list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/modules/core/include)
-    list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/modules/imgproc/include)
-    list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/modules/imgcodecs/include) # for drawer support
-    set(IMPROC_OPENCV_INSTALL_LIBS ${IMPROC_OPENCV_LIBS})  
-  else()
-    set(OpenCV_DIR ${IMPROC_OPENCV_DIR})
-    find_package(OpenCV REQUIRED)
-    set(IMPROC_OPENCV_LIBS          ${OpenCV_LIBS})
-    set(IMPROC_OPENCV_INCLUDE_DIRS  ${OpenCV_INCLUDE_DIRS})
-  endif()
+  # OPENCV
+  FetchContent_Declare(
+    opencv
+    GIT_REPOSITORY  https://github.com/opencv/opencv
+    GIT_TAG         4.9.0
+    SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/opencv
+  )
+  set(BUILD_opencv_apps     OFF)
+  set(BUILD_PERF_TESTS      OFF)
+  set(BUILD_TESTS           OFF)
+  set(WITH_V4L              OFF)
+  set(WITH_WEBP             OFF)
+  set(WITH_TBB              ON )
+  set(WITH_OPENGL           ON )
+  FetchContent_MakeAvailable(opencv)
+  list(APPEND IMPROC_OPENCV_LIBS opencv_core)
+  list(APPEND IMPROC_OPENCV_LIBS opencv_imgproc)
+  list(APPEND IMPROC_OPENCV_LIBS opencv_imgcodecs)                                                        # for drawer support
+  list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${CMAKE_BINARY_DIR})
+  list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/include)
+  list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/modules/core/include)
+  list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/modules/imgproc/include)
+  list(APPEND IMPROC_OPENCV_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/external/opencv/modules/imgcodecs/include) # for drawer support
+  set(IMPROC_OPENCV_INSTALL_LIBS ${IMPROC_OPENCV_LIBS})  
 endif()
 
 message(STATUS "Build ${PROJECT_NAME} Version: ${PROJECT_VERSION}")
