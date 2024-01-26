@@ -110,7 +110,7 @@ jobs:
         run: |
           HOME_DIRECTORY=$(pwd)
           cd ${{ matrix.config.binary_dir }}/bin
-          ./improc_services_testd --gtest_output="xml:improc_corecv_tests.xml"
+          ./improc_corecv_testd --gtest_output="xml:improc_corecv_tests.xml"
           cd "$HOME_DIRECTORY"
           cmake --build --preset ${{ matrix.config.preset_name }} --target improc_corecv_coverage
 
