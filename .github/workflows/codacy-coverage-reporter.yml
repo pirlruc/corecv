@@ -49,26 +49,7 @@ jobs:
         run: |
           sudo apt-get install ninja-build
           sudo apt-get install lcov
-          sudo apt-get install build-essential 
-          sudo apt-get install gcc 
-          sudo apt-get install g++ 
-          sudo apt-get install python3-distutils 
-          sudo apt-get install pkg-config 
-          sudo apt-get install cmake 
-          sudo apt-get install bison 
-          sudo apt-get install gperf 
-          sudo apt-get install nasm 
-          sudo apt-get install libdbus-1-dev 
-          sudo apt-get install libgl1-mesa-dev 
-          sudo apt-get install libglu1-mesa-dev 
-          sudo apt-get install libtool 
-          sudo apt-get install libudev-dev 
-          sudo apt-get install libx11-xcb-dev 
-          sudo apt-get install libxcursor-dev 
-          sudo apt-get install libxdamage-dev 
-          sudo apt-get install libxinerama-dev 
-          sudo apt-get install libxrandr-dev 
-          sudo apt-get install libx11-dev libxft-dev libxext-dev libgles2-mesa-dev libxi-dev libxtst-dev
+          sudo apt-get install libx11-dev libxft-dev libxext-dev libgles2-mesa-dev libxi-dev libxtst-dev libxrandr-dev libgomp1
           ninja    --version
           cmake    --version
           gcc      --version
