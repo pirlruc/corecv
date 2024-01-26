@@ -14,7 +14,7 @@
     {
       "name": "opencv",
       "version>=": "4.8.0",
-      "features": ["ipp","tbb","openmp","opengl","jpeg","png","tiff"]
+      "features": ["default-features","ipp","tbb","openmp","opengl","jpeg","png","tiff"]
     }    
   ],
   "features": {
