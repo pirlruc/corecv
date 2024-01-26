@@ -49,6 +49,7 @@ jobs:
         run: |
           sudo apt-get install ninja-build
           sudo apt-get install lcov
+          sudo apt-get install python3-setuptools python3-mako
           sudo apt-get install libx11-dev libxft-dev libxext-dev libgles2-mesa-dev libxi-dev libxtst-dev
           ninja    --version
           cmake    --version
@@ -91,7 +92,7 @@ jobs:
         shell: bash
         run: cmake --build --preset ${{ matrix.config.preset_name }} --target all
 
-      - if: ${{ steps.branch-name.outputs.current_branch == 'developer' }}
+      - if: ${{ steps.branch-name.outputs.branch == 'developer' }}
         name: Save Build Cache
         id: save-build-cache
         uses: actions/cache/save@v3.3.2
