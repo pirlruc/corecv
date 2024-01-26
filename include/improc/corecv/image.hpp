@@ -67,9 +67,10 @@ namespace improc {
 
                 if (this->data_.channels() != color_space_object.GetNumberChannels())
                 {
-                    IMPROC_CORECV_LOGGER_ERROR  ( "ERROR_01: Invalid color space for image. Expected {} channels but image has {}."
-                                                , color_space_object.GetNumberChannels(), this->data_.channels() );
-                    throw improc::invalid_color_space();
+                    std::string error_message = fmt::format ( "Invalid color space for image. Color space expects {} channels but image has {}."
+                                                            , color_space_object.GetNumberChannels(), this->data_.channels() );
+                    IMPROC_CORECV_LOGGER_ERROR("ERROR_01: " + error_message);
+                    throw improc::value_error(std::move(error_message));
                 }
                 this->color_space_ = color_space_object;
             }
