@@ -49,6 +49,8 @@ namespace improc
                 {
                     case ThresholdType::Value::kOtsu  : return "Otsu";    break;
                     case ThresholdType::Value::kBinary: return "Binary";  break;
+                    default:
+                        throw improc::key_error("ToString method not defined for threshold type enum");
                 }
             }
 
@@ -61,6 +63,8 @@ namespace improc
                 {
                     case ThresholdType::Value::kOtsu  : return cv::THRESH_OTSU;    break;
                     case ThresholdType::Value::kBinary: return cv::THRESH_BINARY;  break;
+                    default:
+                        throw improc::key_error("ToOpenCV method not defined for threshold type enum");
                 }
             }
     };

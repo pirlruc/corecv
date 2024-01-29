@@ -49,6 +49,8 @@ namespace improc
                 {
                     case KernelShape::Value::kRectangle: return "Rectangle";  break;
                     case KernelShape::Value::kEllipse  : return "Ellipse";  break;
+                    default:
+                        throw improc::key_error("ToString method not defined for kernel shape enum");
                 }
             }
 
@@ -61,6 +63,8 @@ namespace improc
                 {
                     case KernelShape::Value::kRectangle: return cv::MORPH_RECT;     break;
                     case KernelShape::Value::kEllipse  : return cv::MORPH_ELLIPSE;  break;
+                    default:
+                        throw improc::key_error("ToOpenCV method not defined for kernel shape enum");
                 }
             }
     };

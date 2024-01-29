@@ -55,19 +55,27 @@ TEST(RotationType,TestApplyRotation) {
     improc::RotationType rotation_270deg {"270-deg"};
     cv::Mat original = cv::Mat::ones(10,20,CV_8UC1);
     cv::Mat rotated  = rotation_0deg.Apply(original);
+    std::cout << "0 deg applied" << std::endl;
     EXPECT_EQ(rotated.cols,original.cols);
     EXPECT_EQ(rotated.rows,original.rows);
     EXPECT_EQ(cv::norm(rotation_0deg.ApplyInverse(rotated),original,cv::NORM_L1),0);
+    std::cout << "0 deg checked" << std::endl;
     rotated = rotation_180deg.Apply(original);
+    std::cout << "180 deg applied" << std::endl;
     EXPECT_EQ(rotated.cols,original.cols);
     EXPECT_EQ(rotated.rows,original.rows);
     EXPECT_EQ(cv::norm(rotation_180deg.ApplyInverse(rotated),original,cv::NORM_L1),0);
+    std::cout << "180 deg checked" << std::endl;
     rotated = rotation_90deg.Apply(original);
+    std::cout << "90 deg applied" << std::endl;
     EXPECT_EQ(rotated.cols,original.rows);
     EXPECT_EQ(rotated.rows,original.cols);
     EXPECT_EQ(cv::norm(rotation_90deg.ApplyInverse(rotated),original,cv::NORM_L1),0);
+    std::cout << "90 deg checked" << std::endl;
     rotated = rotation_270deg.Apply(original);
+    std::cout << "270 deg applied" << std::endl;
     EXPECT_EQ(rotated.cols,original.rows);
     EXPECT_EQ(rotated.rows,original.cols);
     EXPECT_EQ(cv::norm(rotation_270deg.ApplyInverse(rotated),original,cv::NORM_L1),0);
+    std::cout << "270 deg checked" << std::endl;
 }

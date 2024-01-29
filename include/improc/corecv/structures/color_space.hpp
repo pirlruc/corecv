@@ -56,6 +56,8 @@ namespace improc
                     case ColorSpace::Value::kBGRA: return "BGRA"; break;
                     case ColorSpace::Value::kRGBA: return "RGBA"; break;
                     case ColorSpace::Value::kGray: return "Gray"; break;
+                    default:
+                        throw improc::key_error("ToString method not defined for color space enum");
                 }
             }
 
@@ -71,6 +73,8 @@ namespace improc
                     case ColorSpace::Value::kBGRA: return 4;    break;
                     case ColorSpace::Value::kRGBA: return 4;    break;
                     case ColorSpace::Value::kGray: return 1;    break;
+                    default:
+                        throw improc::key_error("GetNumberChannels method not defined for color space enum");                
                 }
             }
 
@@ -109,6 +113,8 @@ namespace improc
                             case ColorSpace::Value::kBGRA: return cv::COLOR_BGR2BGRA;                       break;
                             case ColorSpace::Value::kRGBA: return cv::COLOR_BGR2RGBA;                       break;
                             case ColorSpace::Value::kGray: return cv::COLOR_BGR2GRAY;                       break;
+                            default:
+                                throw improc::key_error("GetColorConversionCode method not defined for color space enum from BGR");
                         }
                         break;
 
@@ -122,6 +128,8 @@ namespace improc
                             case ColorSpace::Value::kBGRA: return cv::COLOR_RGB2BGRA;                       break;
                             case ColorSpace::Value::kRGBA: return cv::COLOR_RGB2RGBA;                       break;
                             case ColorSpace::Value::kGray: return cv::COLOR_RGB2GRAY;                       break;
+                            default:
+                                throw improc::key_error("GetColorConversionCode method not defined for color space enum from RGB");
                         }
                         break;
 
@@ -135,6 +143,8 @@ namespace improc
                                 break;
                             case ColorSpace::Value::kRGBA: return cv::COLOR_BGRA2RGBA;                      break;
                             case ColorSpace::Value::kGray: return cv::COLOR_BGRA2GRAY;                      break;
+                            default:
+                                throw improc::key_error("GetColorConversionCode method not defined for color space enum from BGRA");
                         }
                         break;
 
@@ -148,6 +158,8 @@ namespace improc
                                 throw improc::value_error(fmt::format("Source and target color space {} are the same",this->ToString()));
                                 break;
                             case ColorSpace::Value::kGray: return cv::COLOR_RGBA2GRAY;                      break;
+                            default:
+                                throw improc::key_error("GetColorConversionCode method not defined for color space enum from RGBA");
                         }
                         break;
 
@@ -161,8 +173,13 @@ namespace improc
                             case ColorSpace::Value::kGray: 
                                 throw improc::value_error(fmt::format("Source and target color space {} are the same",this->ToString()));
                                 break;
+                            default:
+                                throw improc::key_error("GetColorConversionCode method not defined for color space enum from Gray");
                         }
                         break;
+
+                    default:
+                        throw improc::key_error("GetColorConversionCode method not defined for color space enum");
                 }
             }
     };
