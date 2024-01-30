@@ -14,7 +14,20 @@
     {
       "name": "opencv",
       "version>=": "4.8.0",
-      "features": ["default-features","ipp","tbb","openmp","opengl","jpeg","png","tiff"]
+      "features": ["default-features","ipp","tbb","openmp","opengl","jpeg","png","tiff"],
+      "platform": "windows"
+    },
+    {
+      "name": "opencv",
+      "version>=": "4.8.0",
+      "features": ["default-features","openmp","opengl","jpeg","png","tiff"],
+      "platform": "linux&arm64"
+    },
+    {
+      "name": "opencv",
+      "version>=": "4.8.0",
+      "features": ["default-features","opengl","jpeg","png","tiff"],
+      "platform": "!windows|!(linux&arm64)"
     }    
   ],
   "features": {
