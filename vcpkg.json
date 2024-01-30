@@ -26,7 +26,7 @@
     {
       "name": "opencv",
       "version>=": "4.8.0",
-      "features": ["default-features","ipp","openmp","opengl","jpeg","png","tiff"],
+      "features": ["default-features","ipp","opengl","jpeg","png","tiff"],
       "platform": "!windows|!(linux&arm64)"
     }    
   ],
