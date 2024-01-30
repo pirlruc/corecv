@@ -15,7 +15,7 @@ TEST(Image,TestSetImageToEmptyImage) {
 
 TEST(Image,TestSetInvalidImage) {
     improc::Image image {};
-    EXPECT_THROW(image.set_data(cv::Mat::zeros(10,10,CV_16S)),improc::not_supported_data_type);
+    EXPECT_THROW(image.set_data(cv::Mat::zeros(10,10,CV_16S)),improc::value_error);
 }
 
 TEST(Image,TestImageConstructor) {
@@ -24,7 +24,7 @@ TEST(Image,TestImageConstructor) {
 }
 
 TEST(Image,TestInvalidImageConstructor) {
-    EXPECT_THROW(improc::Image image {cv::Mat::zeros(10,10,CV_16S)},improc::not_supported_data_type);
+    EXPECT_THROW(improc::Image image {cv::Mat::zeros(10,10,CV_16S)},improc::value_error);
 }
 
 TEST(Image,TestGetImage) {
@@ -61,12 +61,12 @@ TEST(ColorSpaceImage,TestSetToEmptyImage) {
 
 TEST(ColorSpaceImage,TestSetInvalidImage) {
     improc::ColorSpaceImage image {};
-    EXPECT_THROW(image.set_data(cv::Mat::zeros(10,10,CV_16S)),improc::not_supported_data_type);
+    EXPECT_THROW(image.set_data(cv::Mat::zeros(10,10,CV_16S)),improc::value_error);
 }
 
 TEST(ColorSpaceImage,TestSetInvalidColorSpace) {
     improc::ColorSpaceImage image {};
-    EXPECT_THROW(image.set_color_space(improc::ColorSpace::kBGR),improc::invalid_color_space);
+    EXPECT_THROW(image.set_color_space(improc::ColorSpace::kBGR),improc::value_error);
 }
 
 TEST(ColorSpaceImage,TestImageDataConstructor) {

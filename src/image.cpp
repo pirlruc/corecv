@@ -13,9 +13,10 @@ void improc::Image::set_data(const cv::Mat& image_data)
     IMPROC_CORECV_LOGGER_TRACE("Setting image data...");
     if (image_data.depth() != CV_8U) 
     {
-        IMPROC_CORECV_LOGGER_ERROR  ( "ERROR_01: Not supported data type for image. Expected {} received {}."
-                                    , CV_8U, image_data.depth() );
-        throw improc::not_supported_data_type();
+        std::string error_message = fmt::format ( "Not supported data type for image. Expected data type {} received {}."
+                                                , CV_8U, image_data.depth() );
+        IMPROC_CORECV_LOGGER_ERROR("ERROR_01: " + error_message);
+        throw improc::value_error(std::move(error_message));
     }
     this->data_ = image_data;
 }

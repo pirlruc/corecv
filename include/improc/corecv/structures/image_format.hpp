@@ -51,6 +51,8 @@ namespace improc
                     case ImageFormat::Value::kPNG     : return "PNG";       break;
                     case ImageFormat::Value::kJPEG    : return "JPEG";      break;
                     case ImageFormat::Value::kJPEG2000: return "JPEG2000";  break;
+                    default:
+                        throw improc::key_error("ToString method not defined for image format enum");
                 }
             }
 
@@ -64,6 +66,8 @@ namespace improc
                     case ImageFormat::Value::kPNG     : return ".png";  break;
                     case ImageFormat::Value::kJPEG    : return ".jpg";  break;
                     case ImageFormat::Value::kJPEG2000: return ".jp2";  break;
+                    default:
+                        throw improc::key_error("ToOpenCV method not defined for image format enum");
                 }
             }
     };

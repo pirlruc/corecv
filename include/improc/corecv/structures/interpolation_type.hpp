@@ -51,6 +51,8 @@ namespace improc
                     case InterpolationType::Value::kLinear : return "Linear";   break;
                     case InterpolationType::Value::kCubic  : return "Cubic";    break;
                     case InterpolationType::Value::kNearest: return "Nearest";  break;
+                    default:
+                        throw improc::key_error("ToString method not defined for interpolation type enum");
                 }
             }
 
@@ -64,6 +66,8 @@ namespace improc
                     case InterpolationType::Value::kLinear : return cv::INTER_LINEAR;   break;
                     case InterpolationType::Value::kCubic  : return cv::INTER_CUBIC;    break;
                     case InterpolationType::Value::kNearest: return cv::INTER_NEAREST;  break;
+                    default:
+                        throw improc::key_error("ToOpenCV method not defined for interpolation type enum");
                 }
             }
     };

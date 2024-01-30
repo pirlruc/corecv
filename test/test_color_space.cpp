@@ -72,7 +72,7 @@ TEST(ColorSpace,TestGetColorConversionCodeBGR) {
     improc::ColorSpace color_space_bgra{"bgra"};
     improc::ColorSpace color_space_rgba{"rgba"};
     improc::ColorSpace color_space_gray{"gray"};
-    EXPECT_THROW(color_space_bgr.GetColorConversionCode(color_space_bgr),improc::not_supported_color_conversion);
+    EXPECT_THROW(color_space_bgr.GetColorConversionCode(color_space_bgr),improc::value_error);
     EXPECT_EQ(color_space_bgr.GetColorConversionCode(color_space_rgb) ,cv::COLOR_BGR2RGB);
     EXPECT_EQ(color_space_bgr.GetColorConversionCode(color_space_bgra),cv::COLOR_BGR2BGRA);
     EXPECT_EQ(color_space_bgr.GetColorConversionCode(color_space_rgba),cv::COLOR_BGR2RGBA);
@@ -86,7 +86,7 @@ TEST(ColorSpace,TestGetColorConversionCodeRGB) {
     improc::ColorSpace color_space_rgba{"rgba"};
     improc::ColorSpace color_space_gray{"gray"};
     EXPECT_EQ(color_space_rgb.GetColorConversionCode(color_space_bgr) ,cv::COLOR_RGB2BGR);
-    EXPECT_THROW(color_space_rgb.GetColorConversionCode(color_space_rgb),improc::not_supported_color_conversion);
+    EXPECT_THROW(color_space_rgb.GetColorConversionCode(color_space_rgb),improc::value_error);
     EXPECT_EQ(color_space_rgb.GetColorConversionCode(color_space_bgra),cv::COLOR_RGB2BGRA);
     EXPECT_EQ(color_space_rgb.GetColorConversionCode(color_space_rgba),cv::COLOR_RGB2RGBA);
     EXPECT_EQ(color_space_rgb.GetColorConversionCode(color_space_gray),cv::COLOR_RGB2GRAY);
@@ -100,7 +100,7 @@ TEST(ColorSpace,TestGetColorConversionCodeBGRA) {
     improc::ColorSpace color_space_gray{"gray"};
     EXPECT_EQ(color_space_bgra.GetColorConversionCode(color_space_bgr) ,cv::COLOR_BGRA2BGR);
     EXPECT_EQ(color_space_bgra.GetColorConversionCode(color_space_rgb) ,cv::COLOR_BGRA2RGB);
-    EXPECT_THROW(color_space_bgra.GetColorConversionCode(color_space_bgra),improc::not_supported_color_conversion);
+    EXPECT_THROW(color_space_bgra.GetColorConversionCode(color_space_bgra),improc::value_error);
     EXPECT_EQ(color_space_bgra.GetColorConversionCode(color_space_rgba),cv::COLOR_BGRA2RGBA);
     EXPECT_EQ(color_space_bgra.GetColorConversionCode(color_space_gray),cv::COLOR_BGRA2GRAY);
 }
@@ -114,7 +114,7 @@ TEST(ColorSpace,TestGetColorConversionCodeRGBA) {
     EXPECT_EQ(color_space_rgba.GetColorConversionCode(color_space_bgr) ,cv::COLOR_RGBA2BGR);
     EXPECT_EQ(color_space_rgba.GetColorConversionCode(color_space_rgb) ,cv::COLOR_RGBA2RGB);
     EXPECT_EQ(color_space_rgba.GetColorConversionCode(color_space_bgra),cv::COLOR_RGBA2BGRA);
-    EXPECT_THROW(color_space_rgba.GetColorConversionCode(color_space_rgba),improc::not_supported_color_conversion);
+    EXPECT_THROW(color_space_rgba.GetColorConversionCode(color_space_rgba),improc::value_error);
     EXPECT_EQ(color_space_rgba.GetColorConversionCode(color_space_gray),cv::COLOR_RGBA2GRAY);
 }
 
@@ -128,5 +128,5 @@ TEST(ColorSpace,TestGetColorConversionCodeGray) {
     EXPECT_EQ(color_space_gray.GetColorConversionCode(color_space_rgb) ,cv::COLOR_GRAY2RGB);
     EXPECT_EQ(color_space_gray.GetColorConversionCode(color_space_bgra),cv::COLOR_GRAY2BGRA);
     EXPECT_EQ(color_space_gray.GetColorConversionCode(color_space_rgba),cv::COLOR_GRAY2RGBA);
-    EXPECT_THROW(color_space_gray.GetColorConversionCode(color_space_gray),improc::not_supported_color_conversion);
+    EXPECT_THROW(color_space_gray.GetColorConversionCode(color_space_gray),improc::value_error);
 }

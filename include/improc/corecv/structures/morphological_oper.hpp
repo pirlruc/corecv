@@ -53,6 +53,8 @@ namespace improc
                     case MorphologicalOper::Value::kErode : return "Erode";     break;
                     case MorphologicalOper::Value::kOpen  : return "Open";      break;
                     case MorphologicalOper::Value::kClose : return "Close";     break;
+                    default:
+                        throw improc::key_error("ToString method not defined for morphological operation enum");
                 }
             }
 
@@ -67,6 +69,8 @@ namespace improc
                     case MorphologicalOper::Value::kErode : return cv::MORPH_ERODE;     break;
                     case MorphologicalOper::Value::kOpen  : return cv::MORPH_OPEN;      break;
                     case MorphologicalOper::Value::kClose : return cv::MORPH_CLOSE;     break;
+                    default:
+                        throw improc::key_error("ToOpenCV method not defined for morphological operation enum");
                 }
             }
     };
