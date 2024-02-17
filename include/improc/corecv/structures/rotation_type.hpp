@@ -53,6 +53,8 @@ namespace improc
                     case RotationType::Value::k90Deg : return "90 Degrees";   break;
                     case RotationType::Value::k180Deg: return "180 Degrees";  break;
                     case RotationType::Value::k270Deg: return "270 Degrees";  break;
+                    default:
+                        throw improc::key_error("ToString method not defined for rotation type enum");
                 }
             }
 
