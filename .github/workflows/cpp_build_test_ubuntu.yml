@@ -1,9 +1,9 @@
-name: CPP Build and Test
+name: Ubuntu Build
 
 on:
   # Triggers the workflow on push or pull request events
   push:
-    branches: 
+    branches:
     - main
     - developer
 
@@ -43,26 +43,14 @@ jobs:
             preset_name: "clang-debug-no-toolchain",
             binary_dir: "out/build/clang-debug-no-toolchain"
           }
-        - {
-            name: windows-latest-clang,
-            os: windows-latest,
-            preset_name: "clang-debug",
-            binary_dir: "out/build/clang-debug"
-          }
-        - {
-            name: windows-latest-clang-no-toolchain,
-            os: windows-latest,
-            preset_name: "clang-debug-no-toolchain",
-            binary_dir: "out/build/clang-debug-no-toolchain"
-          }
-          
+
     steps:
       - name: Get Branch Name
         id: branch-name
         shell: bash
         run: echo "branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
-        
-      - uses: actions/checkout@v4.1.1
+
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
@@ -71,10 +59,10 @@ jobs:
           echo github.event.action: ${{ github.event.action }}
           echo github.event_name: ${{ github.event_name }}
           echo github.branch: ${{ steps.branch-name.outputs.branch }}
-          
-      - name: Install Dependencies Linux
-        if: startsWith(matrix.config.name, 'ubuntu-latest')
+
+      - name: Install Dependencies
         run: |
+          sudo apt-get update
           sudo apt-get install ninja-build
           sudo apt-get install lcov
           sudo apt-get install libx11-dev libxft-dev libxext-dev libgles2-mesa-dev libxi-dev libxtst-dev libxrandr-dev libomp-14-dev
@@ -87,19 +75,9 @@ jobs:
           lcov     --version
           vcpkg    --version
 
-      - name: Install Dependencies Windows
-        if: startsWith(matrix.config.name, 'windows-latest')
-        run: |
-          choco install ninja
-          ninja    --version
-          cmake    --version
-          gcc      --version
-          clang    --version
-          vcpkg    --version
-
       - name: Restore Build Cache
         id: restore-build-cache
-        uses: actions/cache/restore@v3.3.2
+        uses: actions/cache/restore@v4
         with:
           path: |
             out/*
@@ -120,26 +98,17 @@ jobs:
           rm -rf build
           mkdir build
 
-      - name: Configure & Build Linux
-        if: startsWith(matrix.config.name, 'ubuntu-latest')
+      - name: Configure & Build
         shell: bash
         run: |
           export VCPKG_ROOT=/usr/local/share/vcpkg
           cmake --preset ${{ matrix.config.preset_name }}
           cmake --build --preset ${{ matrix.config.preset_name }} --target all
 
-      - name: Configure & Build Windows
-        if: startsWith(matrix.config.name, 'windows-latest')
-        shell: bash
-        run: |
-          export VCPKG_ROOT=C:\vcpkg
-          cmake --preset ${{ matrix.config.preset_name }}
-          cmake --build --preset ${{ matrix.config.preset_name }} --target all
-
       - if: ${{ steps.branch-name.outputs.branch == 'developer' }}
         name: Save Build Cache
         id: save-build-cache
-        uses: actions/cache/save@v3.3.2
+        uses: actions/cache/save@v4
         with:
           path: |
             out/*
