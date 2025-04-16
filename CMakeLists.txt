@@ -48,7 +48,7 @@ else()
   FetchContent_Declare(
     opencv
     GIT_REPOSITORY  https://github.com/opencv/opencv
-    GIT_TAG         4.9.0
+    GIT_TAG         4.11.0
     SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/opencv
   )
   set(BUILD_opencv_apps     OFF)
