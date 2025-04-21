@@ -1,15 +1,16 @@
 {
-  "name": "improc-corecv",
-  "version": "1.0.0",
-  "port-version": 0,
   "dependencies": [
     {
-      "name": "spdlog",
-      "version>=": "1.15.2"
+      "name": "pipes",
+      "version>=": "1.0.1"
     },
     {
-      "name": "jsoncpp",
-      "version>=": "1.9.6"
+      "name": "improc-infrastructure",
+      "version>=": "c7b25554ac243724bfe5677201e12af3723a0e5c"
+    },
+    {
+      "name": "improc-services",
+      "version>=": "c7b25554ac243724bfe5677201e12af3723a0e5c"
     },
     {
       "name": "opencv",
@@ -34,6 +35,5 @@
         }
       ]
     }
-  },
-  "builtin-baseline": "53bef8994c541b6561884a8395ea35715ece75db"
+  }
 }

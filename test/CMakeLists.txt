@@ -34,13 +34,18 @@ configure_file(
   ${PROJECT_SOURCE_DIR}/test/${PROJECT_NAME}_test_config.hpp
 )
 
+set(IMPROC_CORECV_TEST_EXE ${PROJECT_NAME}_test)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  set(IMPROC_CORECV_TEST_EXE ${PROJECT_NAME}_test${CMAKE_DEBUG_POSTFIX})
+endif()
+
 if(IMPROC_WITH_COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
   set(ENV{LLVM_PROFILE_FILE} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
-  find_program(LLVM_PROFDATA llvm-profdata-14 REQUIRED)
-  find_program(LLVM_COV      llvm-cov-14      REQUIRED)
-  find_program(GENHTML       genhtml          REQUIRED)
+  find_program(LLVM_PROFDATA llvm-profdata-${IMPROC_COVERAGE_VERSION} REQUIRED)
+  find_program(LLVM_COV      llvm-cov-${IMPROC_COVERAGE_VERSION}      REQUIRED)
+  find_program(GENHTML       genhtml                                  REQUIRED)
   
   add_custom_target(
     ${PROJECT_NAME}_coverage
@@ -49,7 +54,7 @@ if(IMPROC_WITH_COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
                                    -o ${CMAKE_BINARY_DIR}/${PROJECT_NAME}_coverage.profdata
     COMMAND ${LLVM_COV} export  --ignore-filename-regex="external/*" 
                                 --format=lcov --instr-profile ${CMAKE_BINARY_DIR}/${PROJECT_NAME}_coverage.profdata 
-                                                             ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}_testd 
+                                                             ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${IMPROC_CORECV_TEST_EXE} 
                                                            > ${CMAKE_BINARY_DIR}/${PROJECT_NAME}_coverage.lcov
     COMMAND ${GENHTML} --demangle-cpp -o ${PROJECT_NAME}_coverage ${CMAKE_BINARY_DIR}/${PROJECT_NAME}_coverage.lcov
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
@@ -60,9 +65,9 @@ if(IMPROC_WITH_COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Og --coverage")
   set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
 
-  find_program(GCOV    gcov-11 REQUIRED)
-  find_program(LCOV    lcov    REQUIRED)
-  find_program(GENHTML genhtml REQUIRED)
+  find_program(GCOV    gcov-${IMPROC_COVERAGE_VERSION} REQUIRED)
+  find_program(LCOV    lcov                            REQUIRED)
+  find_program(GENHTML genhtml                         REQUIRED)
   
   add_custom_target(
     ${PROJECT_NAME}_coverage
@@ -75,9 +80,9 @@ if(IMPROC_WITH_COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   )
 endif()
 
-add_executable(
-  ${PROJECT_NAME}_test
-    
+set(
+  IMPROC_CORECV_TEST_FILES
+
   ${PROJECT_SOURCE_DIR}/test/test_logger_improc.cpp
   ${PROJECT_SOURCE_DIR}/test/test_json_parser.cpp
   ${PROJECT_SOURCE_DIR}/test/test_color_space.cpp
@@ -90,7 +95,9 @@ add_executable(
   ${PROJECT_SOURCE_DIR}/test/test_image.cpp
 
   ${PROJECT_SOURCE_DIR}/test/test_convert_color_space.cpp
-  )
+)
+
+add_executable(${PROJECT_NAME}_test ${IMPROC_CORECV_TEST_FILES})
 set_target_properties(${PROJECT_NAME}_test PROPERTIES CXX_STANDARD           17)
 set_target_properties(${PROJECT_NAME}_test PROPERTIES CXX_STANDARD_REQUIRED  TRUE)
 set_target_properties(${PROJECT_NAME}_test PROPERTIES LINKER_LANGUAGE        CXX)
@@ -104,6 +111,7 @@ target_link_libraries(${PROJECT_NAME}_test  PRIVATE GTest::gtest GTest::gtest_ma
 
 gtest_discover_tests(
   ${PROJECT_NAME}_test
+  DISCOVERY_MODE PRE_TEST
   WORKING_DIRECTORY                           ${PROJECT_SOURCE_DIR}/test
   PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY    "${PROJECT_SOURCE_DIR}/test"
 )

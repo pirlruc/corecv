@@ -8,35 +8,60 @@ if(NOT DEFINED IMPROC_SUPERPROJECT_VERSION)
   set(IMPROC_SUPERPROJECT_VERSION 1.0.0)
 endif()
 
+if(NOT DEFINED IMPROC_COVERAGE_VERSION)
+  if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    set(IMPROC_COVERAGE_VERSION "17")
+  elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set(IMPROC_COVERAGE_VERSION "13")
+  else()
+    set(IMPROC_COVERAGE_VERSION "17")
+  endif()
+endif()
+
 if(NOT DEFINED IMPROC_CORECV_WITH_TESTS)
   set(IMPROC_CORECV_WITH_TESTS OFF)
 endif()
 
-if(IMPROC_WITH_TESTS OR IMPROC_CORECV_WITH_TESTS)
+if(IMPROC_WITH_TESTS OR IMPROC_WITH_COVERAGE OR IMPROC_CORECV_WITH_TESTS)
   list(APPEND VCPKG_MANIFEST_FEATURES "tests")
 endif()
 
 project(
-  improc_corecv
+  improc-corecv
   VERSION     ${IMPROC_SUPERPROJECT_VERSION}
   LANGUAGES   CXX
 )
+string(REPLACE "-" "_" PROJECT_NAME_FILE ${PROJECT_NAME})
 
 include(FetchContent)
 
 # Project configuration
+option(IMPROC_WITH_TESTS 			     "Building library with tests"          OFF)
+option(IMPROC_WITH_COVERAGE  	     "Building library with code coverage"  OFF)
+option(BUILD_SHARED_LIBS           "Building shared libraries"            ON)
+
 if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
   set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"      CACHE PATH "Archive output dir.")
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"      CACHE PATH "Library output dir.")
   set(CMAKE_PDB_OUTPUT_DIRECTORY     "${CMAKE_BINARY_DIR}/bin"      CACHE PATH "PDB (MSVC debug symbol)output dir.")
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"      CACHE PATH "Executable/dll output dir.")
   set(CMAKE_DEBUG_POSTFIX d)
-  option(IMPROC_WITH_TESTS 			     "Building library with tests"          OFF)
-  option(IMPROC_WITH_COVERAGE  	     "Building library with code coverage"  OFF)
-  option(BUILD_SHARED_LIBS           "Building shared libraries"            ON)
 
-  add_subdirectory(${PROJECT_SOURCE_DIR}/modules/infrastructure ${CMAKE_BINARY_DIR}/infrastructure)
-  add_subdirectory(${PROJECT_SOURCE_DIR}/modules/services       ${CMAKE_BINARY_DIR}/services)
+  if(IMPROC_WITH_COVERAGE AND NOT IMPROC_WITH_TESTS AND NOT IMPROC_CORECV_WITH_TESTS)
+    message(STATUS "Warning: IMPROC_COVERAGE ON but tests of image processing library is not ON")
+    message(STATUS "---------> Setting IMPROC_CORECV_WITH_TESTS = ON")
+    set(IMPROC_CORECV_WITH_TESTS ON)
+  endif()
+
+  if(DEFINED CMAKE_TOOLCHAIN_FILE)
+    find_package(improc-infrastructure CONFIG REQUIRED)
+    find_package(improc-services CONFIG REQUIRED)
+    add_library(improc::infrastructure ALIAS improc::improc-infrastructure)
+    add_library(improc::services ALIAS improc::improc-services)
+  else()
+    add_subdirectory(${PROJECT_SOURCE_DIR}/modules/infrastructure ${CMAKE_BINARY_DIR}/infrastructure)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/modules/services       ${CMAKE_BINARY_DIR}/services)
+  endif()
 endif()
 
 # Add external dependencies
@@ -76,7 +101,12 @@ else()
                                                         $<INSTALL_INTERFACE:include> )
 endif()
 
+set(PKG_CONFIG_REQUIRES "improc-services ${IMPROC_OPENCV_LIBS}")
 message(STATUS "Build ${PROJECT_NAME} Version: ${PROJECT_VERSION}")
+message(STATUS "IMPROC_WITH_TESTS       : ${IMPROC_WITH_TESTS}")
+message(STATUS "IMPROC_CORECV_WITH_TESTS: ${IMPROC_CORECV_WITH_TESTS}")
+message(STATUS "IMPROC_WITH_COVERAGE    : ${IMPROC_WITH_COVERAGE}")
+message(STATUS "IMPROC_COVERAGE_VERSION : ${IMPROC_COVERAGE_VERSION}")
 message(STATUS "CMake Toolchain File: ${CMAKE_TOOLCHAIN_FILE}")
 message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "Install Dir: ${CMAKE_INSTALL_PREFIX}")
@@ -106,7 +136,11 @@ set(
   ${PROJECT_SOURCE_DIR}/src/threshold_type.cpp
 )
 
-add_library(${PROJECT_NAME} SHARED ${IMPROC_CORECV_LIB_FILES})
+if (BUILD_SHARED_LIBS)
+  add_library(${PROJECT_NAME} SHARED ${IMPROC_CORECV_LIB_FILES})
+else()
+  add_library(${PROJECT_NAME} STATIC ${IMPROC_CORECV_LIB_FILES})
+endif()
 add_library(improc::corecv ALIAS ${PROJECT_NAME})
 add_dependencies(${PROJECT_NAME} improc::services ${IMPROC_OPENCV_LIBS})
 
@@ -169,25 +203,20 @@ else()
   set(PKG_CONFIG_LIBDIR "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
 endif()
 configure_file(
-  ${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}.pc.in
+  ${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME_FILE}.pc.in
   ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc 
   @ONLY )
 install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 
 # CMake config files
-set(CONFIG_TARGETS_FILE "${PROJECT_NAME}ConfigTargets.cmake")
-set(EXPORT_DESTINATION_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
-install(EXPORT ${PROJECT_NAME}_targets FILE ${CONFIG_TARGETS_FILE} DESTINATION ${EXPORT_DESTINATION_DIR})
-
-include(CMakePackageConfigHelpers)
-configure_package_config_file(
-  ${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}_config.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake 
-  INSTALL_DESTINATION ${EXPORT_DESTINATION_DIR} )
-write_basic_package_version_file(
-  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-  VERSION ${IMPROC_SUPERPROJECT_VERSION}
-  COMPATIBILITY SameMajorVersion)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake 
-              ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+set(TARGETS_FILE "${PROJECT_NAME}-targets.cmake")
+set(EXPORT_DESTINATION_DIR share/${PROJECT_NAME})
+install(EXPORT ${PROJECT_NAME}_targets
+        FILE ${TARGETS_FILE}
+        NAMESPACE improc::
         DESTINATION ${EXPORT_DESTINATION_DIR})
+configure_file(
+  ${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME_FILE}_config.cmake.in
+  ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+  @ONLY )
+install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake DESTINATION ${EXPORT_DESTINATION_DIR})
