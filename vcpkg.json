@@ -1,27 +1,19 @@
 {
   "dependencies": [
     {
-      "name": "pipes",
-      "version>=": "1.0.1"
-    },
-    {
-      "name": "improc-infrastructure",
-      "version>=": "c7b25554ac243724bfe5677201e12af3723a0e5c"
-    },
-    {
       "name": "improc-services",
-      "version>=": "c7b25554ac243724bfe5677201e12af3723a0e5c"
+      "version>=": "9949f170466e41091a9c846df4dd43fef70cb95b"
     },
     {
       "name": "opencv",
       "version>=": "4.11.0",
-      "features": ["default-features","ipp","tbb","thread","opencl","openmp","opengl","jpeg","png","tiff"],
+      "features": ["ipp","tbb","thread","opencl","openmp","opengl","jpeg","png","tiff"],
       "platform": "windows"
     },
     {
       "name": "opencv",
       "version>=": "4.11.0",
-      "features": ["default-features","thread","opencl","openmp","opengl","jpeg","png","tiff"],
+      "features": ["thread","opencl","openmp","opengl","jpeg","png","tiff"],
       "platform": "!windows"
     }
   ],
