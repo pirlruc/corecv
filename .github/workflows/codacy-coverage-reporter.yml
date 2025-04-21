@@ -56,7 +56,7 @@ jobs:
           sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-17 100
           sudo update-alternatives --set clang   /usr/bin/clang-17
           sudo update-alternatives --set clang++ /usr/bin/clang++-17
-          sudo apt-get install libx11-dev libxft-dev libxext-dev
+          sudo apt-get install libx11-dev libxft-dev libxext-dev libgles2-mesa-dev libltdl-dev
           # sudo apt-get install libx11-dev libxft-dev libxext-dev libgles2-mesa-dev libxi-dev libxtst-dev libxrandr-dev libomp-14-dev
           ninja    --version
           cmake    --version
