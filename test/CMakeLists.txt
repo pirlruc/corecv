@@ -30,8 +30,8 @@ mark_as_advanced(
 
 # Create file to get folder with test
 configure_file(
-  ${PROJECT_SOURCE_DIR}/test/${PROJECT_NAME}_test_config.hpp.in 
-  ${PROJECT_SOURCE_DIR}/test/${PROJECT_NAME}_test_config.hpp
+  ${PROJECT_SOURCE_DIR}/test/${PROJECT_NAME_FILE}_test_config.hpp.in 
+  ${PROJECT_SOURCE_DIR}/test/${PROJECT_NAME_FILE}_test_config.hpp
 )
 
 set(IMPROC_CORECV_TEST_EXE ${PROJECT_NAME}_test)

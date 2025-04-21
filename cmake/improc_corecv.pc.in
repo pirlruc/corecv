@@ -8,5 +8,5 @@ Description: Core computer vision module of image-proc library
 URL: https://github.com/pirlruc/corecv
 Version: @IMPROC_SUPERPROJECT_VERSION@
 Libs: -L${libdir} -limproc_corecv -lopencv_core -lopencv_imgproc -lopencv_imgcodecs
-CFlags: -I${includedir} @PKG_CONFIG_DEFINES@
+CFlags: -I${includedir}
 Requires: @PKG_CONFIG_REQUIRES@

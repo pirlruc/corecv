@@ -15,6 +15,7 @@ jobs:
   codacy-coverage-reporter:
     env:
       VCPKG_ROOT: /usr/local/share/vcpkg
+      
     # The type of runner that the job will run on
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
