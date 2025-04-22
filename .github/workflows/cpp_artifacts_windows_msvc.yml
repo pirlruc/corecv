@@ -63,9 +63,6 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          choco install numpy
-          choco install libjpeg-turbo
-          choco install zlib
           ninja    --version
           cmake    --version
           gcc      --version
