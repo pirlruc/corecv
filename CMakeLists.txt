@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.14-3.18)
 
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 
-set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/install")
+if (NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/install")
+endif()
 
 if(NOT DEFINED IMPROC_SUPERPROJECT_VERSION)
   set(IMPROC_SUPERPROJECT_VERSION 1.0.0)
@@ -76,10 +78,11 @@ else()
     GIT_TAG         4.11.0
     SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/opencv
   )
+  set(BUILD_opencv_videoio  OFF)
+  set(BUILD_opencv_highgui  OFF)
   set(BUILD_opencv_apps     OFF)
   set(BUILD_PERF_TESTS      OFF)
   set(BUILD_TESTS           OFF)
-  set(WITH_V4L              OFF)
   set(WITH_WEBP             OFF)
   set(WITH_TBB              ON )
   set(WITH_OPENGL           ON )

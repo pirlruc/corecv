@@ -68,6 +68,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          choco install numpy
           ninja    --version
           cmake    --version
           gcc      --version
