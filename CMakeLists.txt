@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.14-3.18)
 
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+set(CMAKE_POLICY_DEFAULT_CMP0175 NEW)
+set(CMAKE_POLICY_DEFAULT_CMP0177 NEW)
 
 if (NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/install")
@@ -78,7 +80,6 @@ else()
     GIT_TAG         4.11.0
     SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/opencv
   )
-  set(BUILD_opencv_videoio  OFF)
   set(BUILD_opencv_highgui  OFF)
   set(BUILD_opencv_apps     OFF)
   set(BUILD_PERF_TESTS      OFF)
@@ -87,6 +88,22 @@ else()
   set(WITH_TBB              ON )
   set(WITH_OPENGL           ON )
   FetchContent_MakeAvailable(opencv)
+
+  if (WIN32 OR WINCE)
+    target_compile_options(opencv_flann      PRIVATE -Wno-unknown-pragmas)
+    target_compile_options(opencv_imgproc    PRIVATE -Wno-unknown-pragmas)
+    target_compile_options(opencv_imgcodecs  PRIVATE -Wno-unknown-pragmas)
+    target_compile_options(opencv_features2d PRIVATE -Wno-unknown-pragmas)
+    target_compile_options(opencv_dnn        PRIVATE -Wno-unknown-pragmas)
+    target_compile_options(opencv_calib3d    PRIVATE -Wno-unknown-pragmas)
+    target_compile_options(opencv_ml         PRIVATE -Wno-unknown-pragmas)
+    target_compile_options(opencv_photo      PRIVATE -Wno-unknown-pragmas)
+    target_compile_options(opencv_objdetect  PRIVATE -Wno-unknown-pragmas)
+    target_compile_options(opencv_video      PRIVATE -Wno-unknown-pragmas)
+    target_compile_options(opencv_stitching  PRIVATE -Wno-unknown-pragmas)
+    target_compile_options(opencv_gapi       PRIVATE -Wno-unknown-pragmas)
+  endif()
+
   list(APPEND IMPROC_OPENCV_LIBS opencv_core)
   list(APPEND IMPROC_OPENCV_LIBS opencv_imgproc)
   list(APPEND IMPROC_OPENCV_LIBS opencv_imgcodecs)                                                        # for drawer support

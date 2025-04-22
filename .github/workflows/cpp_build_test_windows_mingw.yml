@@ -75,6 +75,7 @@ jobs:
           echo "LLVM-MinGW setup complete."
 
           choco install numpy
+          choco install libjpeg-turbo
           ninja    --version
           cmake    --version
           gcc      --version
