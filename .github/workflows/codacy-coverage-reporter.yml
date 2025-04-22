@@ -56,7 +56,7 @@ jobs:
           sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-17 100
           sudo update-alternatives --set clang   /usr/bin/clang-17
           sudo update-alternatives --set clang++ /usr/bin/clang++-17
-          sudo apt-get install libx11-dev libxft-dev libxext-dev libgles2-mesa-dev libltdl-dev libxi-dev libxtst-dev libxkbcommon-dev libxrandr-dev
+          sudo apt-get install libx11-dev libxft-dev libxext-dev libgl1-mesa-dev libglu1-mesa-dev libgles2-mesa-dev libltdl-dev libxi-dev libxtst-dev libxkbcommon-dev libxrandr-dev
           # sudo apt-get install libomp-14-dev
           ninja    --version
           cmake    --version
@@ -118,9 +118,9 @@ jobs:
         run: |
           HOME_DIRECTORY=$(pwd)
           cd ${{ matrix.config.binary_dir }}/bin
-          ./improc_corecv_testd --gtest_output="xml:improc_corecv_tests.xml"
+          ./improc-corecv_testd --gtest_output="xml:improc-corecv_tests.xml"
           cd "$HOME_DIRECTORY"
-          cmake --build --preset ${{ matrix.config.preset_name }} --target improc_corecv_coverage
+          cmake --build --preset ${{ matrix.config.preset_name }} --target improc-corecv_coverage
 
       - name: Unit Tests Report
         uses: EnricoMi/publish-unit-test-result-action@v2
@@ -129,10 +129,10 @@ jobs:
           check_name: "unit-tests-report"
           time_unit: milliseconds
           files: |
-            **/improc_corecv_tests.xml
+            **/improc-corecv_tests.xml
 
       - name: Run codacy-coverage-reporter
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: ./${{ matrix.config.binary_dir }}/improc_corecv_coverage.lcov
+          coverage-reports: ./${{ matrix.config.binary_dir }}/improc-corecv_coverage.lcov

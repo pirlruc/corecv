@@ -2,7 +2,7 @@
   "dependencies": [
     {
       "name": "improc-services",
-      "version>=": "b1539cf8bc8c5dca6f0c6328ea24cad76dc8940c"
+      "version>=": "09ba35c611aee585869fcee821888e1408ce1d68"
     },
     {
       "name": "opencv",

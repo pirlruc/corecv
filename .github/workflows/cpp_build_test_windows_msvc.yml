@@ -125,4 +125,4 @@ jobs:
       - name: Test
         shell: pwsh
         run: |
-          ./${{ matrix.config.binary_dir }}/bin/improc_corecv_testd.exe
+          ./${{ matrix.config.binary_dir }}/bin/improc-corecv_testd.exe

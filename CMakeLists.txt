@@ -48,7 +48,7 @@ if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
   set(CMAKE_DEBUG_POSTFIX d)
 
   if(IMPROC_WITH_COVERAGE AND NOT IMPROC_WITH_TESTS AND NOT IMPROC_CORECV_WITH_TESTS)
-    message(STATUS "Warning: IMPROC_COVERAGE ON but tests of image processing library is not ON")
+    message(STATUS "Warning: IMPROC_WITH_COVERAGE ON but tests of image processing library is not ON")
     message(STATUS "---------> Setting IMPROC_CORECV_WITH_TESTS = ON")
     set(IMPROC_CORECV_WITH_TESTS ON)
   endif()
