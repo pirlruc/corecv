@@ -71,6 +71,7 @@ jobs:
 
           choco install numpy
           choco install libjpeg-turbo
+          choco install nasm
           ninja    --version
           cmake    --version
           gcc      --version
