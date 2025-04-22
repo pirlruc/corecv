@@ -69,9 +69,11 @@ jobs:
           Add-Content -Path $env:GITHUB_PATH -Value "$INSTALL_DIR/llvm-mingw-${LLVM_MINGW_VERSION}-ucrt-x86_64/bin"
           echo "LLVM-MinGW setup complete."
 
-          choco install numpy
-          choco install libjpeg-turbo
+          pip install numpy
           choco install nasm
+          vcpkg install libjpeg-turbo:${{ matrix.config.triplet }}
+          vcpkg install openexr:${{ matrix.config.triplet }}
+          vcpkg install zlib:${{ matrix.config.triplet }}
           ninja    --version
           cmake    --version
           gcc      --version
