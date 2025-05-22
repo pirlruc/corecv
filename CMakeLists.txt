@@ -12,16 +12,6 @@ if(NOT DEFINED IMPROC_SUPERPROJECT_VERSION)
   set(IMPROC_SUPERPROJECT_VERSION 1.0.0)
 endif()
 
-if(NOT DEFINED IMPROC_COVERAGE_VERSION)
-  if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    set(IMPROC_COVERAGE_VERSION "17")
-  elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(IMPROC_COVERAGE_VERSION "13")
-  else()
-    set(IMPROC_COVERAGE_VERSION "17")
-  endif()
-endif()
-
 if(NOT DEFINED IMPROC_CORECV_WITH_TESTS)
   set(IMPROC_CORECV_WITH_TESTS OFF)
 endif()
@@ -36,6 +26,16 @@ project(
   LANGUAGES   CXX
 )
 string(REPLACE "-" "_" PROJECT_NAME_FILE ${PROJECT_NAME})
+
+if(NOT DEFINED IMPROC_COVERAGE_VERSION)
+  if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    set(IMPROC_COVERAGE_VERSION "17")
+  elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set(IMPROC_COVERAGE_VERSION "13")
+  else()
+    set(IMPROC_COVERAGE_VERSION "17")
+  endif()
+endif()
 
 include(FetchContent)
 
@@ -113,21 +113,21 @@ endif()
 
 set(PKG_CONFIG_REQUIRES "improc-services ${IMPROC_OPENCV_LIBS}")
 message(STATUS "Build ${PROJECT_NAME} Version: ${PROJECT_VERSION}")
-message(STATUS "IMPROC_WITH_TESTS       : ${IMPROC_WITH_TESTS}")
-message(STATUS "IMPROC_CORECV_WITH_TESTS: ${IMPROC_CORECV_WITH_TESTS}")
-message(STATUS "IMPROC_WITH_COVERAGE    : ${IMPROC_WITH_COVERAGE}")
-message(STATUS "IMPROC_COVERAGE_VERSION : ${IMPROC_COVERAGE_VERSION}")
 message(STATUS "CMake Toolchain File: ${CMAKE_TOOLCHAIN_FILE}")
-message(STATUS "Build Type : ${CMAKE_BUILD_TYPE}")
 message(STATUS "Compiler ID: ${CMAKE_CXX_COMPILER_ID}")
 message(STATUS "Simulate ID: ${CMAKE_CXX_SIMULATE_ID}")
 message(STATUS "Build Type : ${CMAKE_BUILD_TYPE}")
 message(STATUS "Install Dir: ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "IMPROC_WITH_TESTS       : ${IMPROC_WITH_TESTS}")
+message(STATUS "IMPROC_CORECV_WITH_TESTS: ${IMPROC_CORECV_WITH_TESTS}")
+message(STATUS "IMPROC_WITH_COVERAGE    : ${IMPROC_WITH_COVERAGE}")
+message(STATUS "IMPROC_COVERAGE_VERSION : ${IMPROC_COVERAGE_VERSION}")
 
 set(
   IMPROC_CORECV_LIB_FILES
 
   ${PROJECT_SOURCE_DIR}/include/improc/corecv/logger_improc.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/corecv/image.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/corecv/parsers/json_parser.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/color_space.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/corecv/structures/image_format.hpp
@@ -149,19 +149,23 @@ set(
   ${PROJECT_SOURCE_DIR}/src/threshold_type.cpp
 )
 
-if (BUILD_SHARED_LIBS)
-  add_library(${PROJECT_NAME} SHARED ${IMPROC_CORECV_LIB_FILES})
-else()
-  add_library(${PROJECT_NAME} STATIC ${IMPROC_CORECV_LIB_FILES})
-endif()
+add_library(${PROJECT_NAME} ${IMPROC_CORECV_LIB_FILES})
 add_library(improc::corecv ALIAS ${PROJECT_NAME})
 add_dependencies(${PROJECT_NAME} improc::services ${IMPROC_OPENCV_LIBS})
 
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD           17)
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD_REQUIRED  TRUE)
-set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE        CXX)
-set_target_properties(${PROJECT_NAME} PROPERTIES VERSION                ${PROJECT_VERSION})
-set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX          ${CMAKE_DEBUG_POSTFIX})
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD              17)
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD_REQUIRED     TRUE)
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS            OFF)
+set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE           CXX)
+set_target_properties(${PROJECT_NAME} PROPERTIES VERSION                   ${PROJECT_VERSION})
+set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
+set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX             ${CMAKE_DEBUG_POSTFIX})
+
+if (BUILD_SHARED_LIBS)
+  target_compile_definitions(${PROJECT_NAME} PRIVATE IMPROC_EXPORTS)
+else()
+  target_compile_definitions(${PROJECT_NAME} PRIVATE IMPROC_STATIC)
+endif()
 
 target_include_directories  (${PROJECT_NAME}  PRIVATE   ${PROJECT_SOURCE_DIR}/include)
 target_include_directories  (${PROJECT_NAME}  INTERFACE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>

@@ -12,7 +12,7 @@ namespace improc {
      * @tparam type 
      */
     template <typename type>
-    class IMPROC_API ImageDebugSingleton
+    class ImageDebugSingleton
     {
         public:
             struct DebugImage
