@@ -7,8 +7,14 @@
     {
       "name": "opencv",
       "version>=": "4.11.0",
+      "features": ["ipp","thread","opencl","openmp","opengl","jpeg","png","tiff"],
+      "platform": "windows & mingw"
+    },
+    {
+      "name": "opencv",
+      "version>=": "4.11.0",
       "features": ["ipp","tbb","thread","opencl","openmp","opengl","jpeg","png","tiff"],
-      "platform": "windows"
+      "platform": "windows & !mingw"
     },
     {
       "name": "opencv",

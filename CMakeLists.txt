@@ -91,6 +91,7 @@ else()
   if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND (WIN32 OR WINCE))
     set(WITH_DIRECTX         OFF)  
     set(WITH_OPENCL_D3D11_NV OFF)
+    set(CPU_DISPATCH         "")
   endif()
   
   FetchContent_MakeAvailable(opencv)

@@ -70,18 +70,6 @@ jobs:
         run: |
           pip install numpy
           choco install nasm
-          if ("${{ matrix.config.preset_name }}" -eq "gcc-debug-no-toolchain") {
-            Rename-Item "vcpkg.json" -NewName "not_using_vcpkg.json"
-            vcpkg install libjpeg-turbo:x64-mingw-dynamic
-            vcpkg install openexr:x64-mingw-dynamic
-            vcpkg install zlib:x64-mingw-dynamic
-          }
-          elseif ("${{ matrix.config.preset_name }}" -eq "clang-debug-no-toolchain") {
-            Rename-Item "vcpkg.json" -NewName "not_using_vcpkg.json"
-            vcpkg install libjpeg-turbo:x64-windows
-            vcpkg install openexr:x64-windows
-            vcpkg install zlib:x64-windows
-          }
           ninja    --version
           cmake    --version
           gcc      --version

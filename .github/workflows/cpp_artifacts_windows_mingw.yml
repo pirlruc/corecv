@@ -71,12 +71,6 @@ jobs:
 
           pip install numpy
           choco install nasm
-          if ("${{ matrix.config.preset_name }}" -eq "clang-release-no-toolchain") {
-            Rename-Item "vcpkg.json" -NewName "not_using_vcpkg.json"
-            vcpkg install libjpeg-turbo:x64-mingw-dynamic
-            vcpkg install openexr:x64-mingw-dynamic
-            vcpkg install zlib:x64-mingw-dynamic
-          }
           ninja    --version
           cmake    --version
           gcc      --version
