@@ -18,13 +18,15 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        - {
-            name: windows-latest-clang,
-            os: windows-latest,
-            preset_name: "clang-release",
-            triplet: "x64-mingw-dynamic",
-            install_dir: "D:/a/corecv/corecv/install"
-          }
+        # TODO: OpenCV installation is installing additional features (protobuf through dnn feature)
+        # that have problems with clang-mingw toolchain.
+        # - {
+        #     name: windows-latest-clang,
+        #     os: windows-latest,
+        #     preset_name: "clang-release",
+        #     triplet: "x64-mingw-dynamic",
+        #     install_dir: "D:/a/corecv/corecv/install"
+        #   }
         - {
             name: windows-latest-clang-no-toolchain,
             os: windows-latest,

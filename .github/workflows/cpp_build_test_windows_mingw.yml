@@ -23,13 +23,15 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        - {
-            name: windows-latest-clang,
-            os: windows-latest,
-            preset_name: "clang-debug",
-            triplet: "x64-mingw-dynamic",
-            binary_dir: "out/build/clang-debug"
-          }
+        # TODO: OpenCV installation is installing additional features (protobuf through dnn feature)
+        # that have problems with clang-mingw toolchain.
+        # - {
+        #     name: windows-latest-clang,
+        #     os: windows-latest,
+        #     preset_name: "clang-debug",
+        #     triplet: "x64-mingw-dynamic",
+        #     binary_dir: "out/build/clang-debug"
+        #   }
         - {
             name: windows-latest-clang-no-toolchain,
             os: windows-latest,
