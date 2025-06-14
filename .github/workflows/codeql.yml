@@ -63,7 +63,7 @@ jobs:
 
 
     - name: Manual Build
-      uses: github/codeql-action/autobuild@v2
+      run: |
         echo "1. Installing dependencies..."
         sudo apt-get update
         sudo apt-get install ninja-build
