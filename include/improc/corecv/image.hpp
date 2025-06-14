@@ -65,7 +65,7 @@ namespace improc {
                     static_assert(improc::dependent_false_v<ColorSpaceType>,"set_color_space not defined for color space type");
                 }
 
-                if (this->data_.channels() != color_space_object.GetNumberChannels())
+                if (this->data_.channels() != static_cast<int>(color_space_object.GetNumberChannels()))
                 {
                     std::string error_message = fmt::format ( "Invalid color space for image. Color space expects {} channels but image has {}."
                                                             , color_space_object.GetNumberChannels(), this->data_.channels() );
