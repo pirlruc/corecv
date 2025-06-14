@@ -73,46 +73,51 @@ if(DEFINED CMAKE_TOOLCHAIN_FILE)
   find_package(OpenCV CONFIG REQUIRED)
   set(IMPROC_OPENCV_LIBS          ${OpenCV_LIBS})
 else()
-  # OPENCV
-  FetchContent_Declare(
-    opencv
-    GIT_REPOSITORY  https://github.com/opencv/opencv
-    GIT_TAG         4.11.0
-    SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/opencv
-  )
-  set(BUILD_opencv_highgui  OFF)
-  set(BUILD_opencv_apps     OFF)
-  set(BUILD_PERF_TESTS      OFF)
-  set(BUILD_TESTS           OFF)
-  set(WITH_WEBP             OFF)
-  set(WITH_TBB              ON )
-  set(WITH_OPENGL           ON )
-  
-  if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND (WIN32 OR WINCE))
-    set(WITH_DIRECTX         OFF)  
-    set(WITH_OPENCL_D3D11_NV OFF)
-    set(CPU_DISPATCH         "")
-  endif()
-  
-  FetchContent_MakeAvailable(opencv)
-  list(APPEND IMPROC_OPENCV_LIBS opencv_core)
-  list(APPEND IMPROC_OPENCV_LIBS opencv_imgproc)
-  list(APPEND IMPROC_OPENCV_LIBS opencv_imgcodecs)                                                        # for drawer support
-  set(IMPROC_OPENCV_INSTALL_LIBS ${IMPROC_OPENCV_LIBS})  
+  if(NOT DEFINED IMPROC_OPENCV_DIR)
+    # OPENCV
+    FetchContent_Declare(
+      opencv
+      GIT_REPOSITORY  https://github.com/opencv/opencv
+      GIT_TAG         4.11.0
+      SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/opencv
+    )
+    set(BUILD_opencv_highgui  OFF)
+    set(BUILD_opencv_apps     OFF)
+    set(BUILD_PERF_TESTS      OFF)
+    set(BUILD_TESTS           OFF)
+    set(WITH_WEBP             OFF)
+    set(WITH_TBB              ON )
+    set(WITH_OPENGL           ON )
+    
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND (WIN32 OR WINCE))
+      set(WITH_DIRECTX         OFF)  
+      set(WITH_OPENCL_D3D11_NV OFF)
+      set(CPU_DISPATCH         "")
+    endif()
+    
+    FetchContent_MakeAvailable(opencv)
+    list(APPEND IMPROC_OPENCV_LIBS opencv_core)
+    list(APPEND IMPROC_OPENCV_LIBS opencv_imgproc)
+    list(APPEND IMPROC_OPENCV_LIBS opencv_imgcodecs)    # for drawer support
 
-  target_include_directories(opencv_core      INTERFACE $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
-                                                        $<INSTALL_INTERFACE:include> )
-  target_include_directories(opencv_core      INTERFACE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/external/opencv/include>
-                                                        $<INSTALL_INTERFACE:include> )
-  target_include_directories(opencv_core      INTERFACE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/external/opencv/modules/core/include>
-                                                        $<INSTALL_INTERFACE:include> )
-  target_include_directories(opencv_imgproc   INTERFACE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/external/opencv/modules/imgproc/include>
-                                                        $<INSTALL_INTERFACE:include> )
-  target_include_directories(opencv_imgcodecs INTERFACE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/external/opencv/modules/imgcodecs/include>
-                                                        $<INSTALL_INTERFACE:include> )
+    target_include_directories(opencv_core      INTERFACE $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
+                                                          $<INSTALL_INTERFACE:include> )
+    target_include_directories(opencv_core      INTERFACE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/external/opencv/include>
+                                                          $<INSTALL_INTERFACE:include> )
+    target_include_directories(opencv_core      INTERFACE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/external/opencv/modules/core/include>
+                                                          $<INSTALL_INTERFACE:include> )
+    target_include_directories(opencv_imgproc   INTERFACE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/external/opencv/modules/imgproc/include>
+                                                          $<INSTALL_INTERFACE:include> )
+    target_include_directories(opencv_imgcodecs INTERFACE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/external/opencv/modules/imgcodecs/include>
+                                                          $<INSTALL_INTERFACE:include> )
+  else()
+    set(OpenCV_DIR ${IMPROC_OPENCV_DIR})
+    find_package(OpenCV REQUIRED)
+    set(IMPROC_OPENCV_LIBS          ${OpenCV_LIBS})
+  endif()
 endif()
 
-set(PKG_CONFIG_REQUIRES "improc-services ${IMPROC_OPENCV_LIBS}")
+set(PKG_CONFIG_REQUIRES "improc-services opencv4")
 message(STATUS "Build ${PROJECT_NAME} Version: ${PROJECT_VERSION}")
 message(STATUS "CMake Toolchain File: ${CMAKE_TOOLCHAIN_FILE}")
 message(STATUS "Compiler ID: ${CMAKE_CXX_COMPILER_ID}")
@@ -123,6 +128,7 @@ message(STATUS "IMPROC_WITH_TESTS       : ${IMPROC_WITH_TESTS}")
 message(STATUS "IMPROC_CORECV_WITH_TESTS: ${IMPROC_CORECV_WITH_TESTS}")
 message(STATUS "IMPROC_WITH_COVERAGE    : ${IMPROC_WITH_COVERAGE}")
 message(STATUS "IMPROC_COVERAGE_VERSION : ${IMPROC_COVERAGE_VERSION}")
+message(STATUS "IMPROC_OPENCV_DIR       : ${IMPROC_OPENCV_DIR}")
 
 set(
   IMPROC_CORECV_LIB_FILES
