@@ -7,18 +7,21 @@
     {
       "name": "opencv",
       "version>=": "4.11.0",
-      "features": ["ipp","thread","opencl","openmp","opengl","jpeg","png","tiff"],
+      "default-features": false,
+      "features": ["thread","opencl","openmp","opengl","jpeg","png","tiff"],
       "platform": "windows & mingw"
     },
     {
       "name": "opencv",
       "version>=": "4.11.0",
+      "default-features": false,
       "features": ["ipp","tbb","thread","opencl","openmp","opengl","jpeg","png","tiff"],
       "platform": "windows & !mingw"
     },
     {
       "name": "opencv",
       "version>=": "4.11.0",
+      "default-features": false,
       "features": ["thread","opencl","openmp","opengl","jpeg","png","tiff"],
       "platform": "!windows"
     }
