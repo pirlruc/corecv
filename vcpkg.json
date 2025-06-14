@@ -8,7 +8,7 @@
       "name": "opencv",
       "version>=": "4.11.0",
       "default-features": false,
-      "features": ["thread","openmp","opengl","jpeg","png","tiff"],
+      "features": ["thread","opencl","openmp","opengl","jpeg","png","tiff"],
       "platform": "windows & mingw"
     },
     {
