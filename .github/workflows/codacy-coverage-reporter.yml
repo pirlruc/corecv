@@ -57,8 +57,8 @@ jobs:
           sudo update-alternatives --set clang   /usr/bin/clang-17
           sudo update-alternatives --set clang++ /usr/bin/clang++-17
           sudo apt-get install libx11-dev libxft-dev libxext-dev libgles2-mesa-dev libltdl-dev libxi-dev libxtst-dev libxkbcommon-dev libxrandr-dev nasm
-          # sudo apt-get install libomp-14-dev
           sudo apt-get install python3-numpy
+          sudo apt-get install libomp-14-dev
           ninja    --version
           cmake    --version
           gcc      --version
@@ -136,4 +136,4 @@ jobs:
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: ./${{ matrix.config.binary_dir }}/improc-corecv_coverage.lcov
+          coverage-reports: ./${{ matrix.config.binary_dir }}/improc-corecv_coverage.info
