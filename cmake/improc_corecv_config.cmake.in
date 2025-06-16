@@ -1,9 +1,7 @@
 include(CMakeFindDependencyMacro)
 
 find_package(improc-services CONFIG REQUIRED)
-find_package(opencv_core REQUIRED)
-find_package(opencv_imgproc REQUIRED)
-find_package(opencv_imgcodecs REQUIRED)
+find_package(OpenCV CONFIG REQUIRED)
 
 include("${CMAKE_CURRENT_LIST_DIR}/@TARGETS_FILE@")
 
