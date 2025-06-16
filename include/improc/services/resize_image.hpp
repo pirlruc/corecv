@@ -10,7 +10,7 @@
 namespace improc {
     // TODO: Review implementation and add tests
     template <typename KeyType,typename ContextType>
-    class IMPROC_API Resize : public improc::BaseService<KeyType,ContextType>
+    class Resize : public improc::BaseService<KeyType,ContextType>
     {
         private:
             static constexpr unsigned int   kImageDataKeyIndex   = 0;

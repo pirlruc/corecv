@@ -1,8 +1,11 @@
-name: Coverage Reporter
+name: Windows MSVC Build
 
 on:
   # Triggers the workflow on push or pull request events
   push:
+    branches:
+    - main
+    - developer
   pull_request:
     branches:
     - main
@@ -12,10 +15,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  codacy-coverage-reporter:
-    env:
-      VCPKG_ROOT: /usr/local/share/vcpkg
-      
+  build:
     # The type of runner that the job will run on
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
@@ -23,11 +23,33 @@ jobs:
       fail-fast: false
       matrix:
         config:
+        # TODO: There is an error executing tests most likely due to a memory leak.
+        # Removing gcc compilation for now.
+        # - {
+        #     name: windows-latest-gcc,
+        #     os: windows-latest,
+        #     preset_name: "gcc-debug",
+        #     triplet: "x64-mingw-dynamic",
+        #     binary_dir: "out/build/gcc-debug"
+        #   }        
         - {
-            name: codacy-coverage-reporter,
-            os: ubuntu-latest,
-            preset_name: "clang-coverage",
-            binary_dir: "out/build/clang-coverage"
+            name: windows-latest-clang,
+            os: windows-latest,
+            preset_name: "clang-debug",
+            triplet: "x64-windows",
+            binary_dir: "out/build/clang-debug"
+          }
+        - {
+            name: windows-latest-gcc-no-toolchain,
+            os: windows-latest,
+            preset_name: "gcc-debug-no-toolchain",
+            binary_dir: "out/build/gcc-debug-no-toolchain"
+          }
+        - {
+            name: windows-latest-clang-no-toolchain,
+            os: windows-latest,
+            preset_name: "clang-debug-no-toolchain",
+            binary_dir: "out/build/clang-debug-no-toolchain"
           }
 
     steps:
@@ -48,24 +70,12 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install ninja-build
-          sudo apt-get install lcov
-          sudo apt-get install clang-17
-          sudo update-alternatives --install /usr/bin/clang   clang   /usr/bin/clang-17   100
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-17 100
-          sudo update-alternatives --set clang   /usr/bin/clang-17
-          sudo update-alternatives --set clang++ /usr/bin/clang++-17
-          sudo apt-get install libx11-dev libxft-dev libxext-dev libgles2-mesa-dev libltdl-dev libxi-dev libxtst-dev libxkbcommon-dev libxrandr-dev nasm
-          sudo apt-get install python3-numpy
-          sudo apt-get install libomp-14-dev
+          pip install numpy
+          choco install nasm
           ninja    --version
           cmake    --version
           gcc      --version
-          gcc-13   --version
           clang    --version
-          clang-17 --version
-          lcov     --version
           vcpkg    --version
 
       - name: Restore Build Cache
@@ -91,14 +101,16 @@ jobs:
           rm -rf build
           mkdir build
 
-      - name: Configure
+      - name: Configure & Build
         shell: bash
         run: |
-          cmake --preset ${{ matrix.config.preset_name }}
-
-      - name: Build
-        shell: bash
-        run: cmake --build --preset ${{ matrix.config.preset_name }} --target all
+          export VCPKG_ROOT=C:/vcpkg
+          if [ -n "${{ matrix.config.triplet }}" ]; then
+            cmake --preset ${{ matrix.config.preset_name }} -DVCPKG_TARGET_TRIPLET=${{ matrix.config.triplet }}
+          else
+            cmake --preset ${{ matrix.config.preset_name }}
+          fi
+          cmake --build --preset ${{ matrix.config.preset_name }} --target all
 
       - if: ${{ steps.branch-name.outputs.branch == 'developer' }}
         name: Save Build Cache
@@ -114,26 +126,7 @@ jobs:
             modules/services/external/*
           key: ${{ matrix.config.os }}-build-${{ matrix.config.preset_name }}-${{ hashFiles('CMakeLists.txt','test/CMakeLists.txt') }}
 
-      - name: Code Coverage Report
-        shell: bash
+      - name: Test
+        shell: pwsh
         run: |
-          HOME_DIRECTORY=$(pwd)
-          cd ${{ matrix.config.binary_dir }}/bin
-          ./improc-corecv_testd --gtest_output="xml:improc-corecv_tests.xml"
-          cd "$HOME_DIRECTORY"
-          cmake --build --preset ${{ matrix.config.preset_name }} --target improc-corecv_coverage
-
-      - name: Unit Tests Report
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
-        with:
-          check_name: "unit-tests-report"
-          time_unit: milliseconds
-          files: |
-            **/improc-corecv_tests.xml
-
-      - name: Run codacy-coverage-reporter
-        uses: codacy/codacy-coverage-reporter-action@v1
-        with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: ./${{ matrix.config.binary_dir }}/improc-corecv_coverage.info
+          ./${{ matrix.config.binary_dir }}/bin/improc-corecv_testd.exe

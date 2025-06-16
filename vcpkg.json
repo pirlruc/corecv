@@ -1,26 +1,28 @@
 {
-  "name": "improc-corecv",
-  "version": "1.0.0",
-  "port-version": 0,
   "dependencies": [
     {
-      "name": "spdlog",
-      "version>=": "1.12.0"
-    },
-    {
-      "name": "jsoncpp",
-      "version>=": "1.9.5"
+      "name": "improc-services",
+      "version>=": "7825e3f13a8f43ab445ed14cc9e2bdbe62d50931"
     },
     {
       "name": "opencv",
-      "version>=": "4.8.0",
-      "features": ["default-features","ipp","tbb","openmp","opengl","jpeg","png","tiff"],
-      "platform": "windows"
+      "version>=": "4.11.0",
+      "default-features": false,
+      "features": ["thread","opencl","openmp","opengl","jpeg","png","tiff"],
+      "platform": "windows & mingw"
     },
     {
       "name": "opencv",
-      "version>=": "4.8.0",
-      "features": ["default-features","openmp","opengl","jpeg","png","tiff"],
+      "version>=": "4.11.0",
+      "default-features": false,
+      "features": ["ipp","tbb","thread","opencl","openmp","opengl","jpeg","png","tiff"],
+      "platform": "windows & !mingw"
+    },
+    {
+      "name": "opencv",
+      "version>=": "4.11.0",
+      "default-features": false,
+      "features": ["thread","opencl","openmp","opengl","jpeg","png","tiff"],
       "platform": "!windows"
     }
   ],
@@ -30,10 +32,9 @@
       "dependencies": [
         {
           "name": "gtest",
-          "version>=": "1.14.0"
+          "version>=": "1.17.0"
         }
       ]
     }
-  },
-  "builtin-baseline": "53bef8994c541b6561884a8395ea35715ece75db"
+  }
 }
