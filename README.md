@@ -1,3 +1,5 @@
+> **Deprecated.** Images, color spaces, resize, morphology, and threshold moved to [heimdallcv](https://github.com/NjordLabs/heimdallcv).
+
 # improc_corecv
 
 ## main
